@@ -1,0 +1,9 @@
+[submodule "vendor/glfw"]
+	path = vendor/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "thermo-glad"]
+	path = thermo-glad
+	url = https://github.com/Aletropy/thermo-glad.git
+[submodule "vendor/thermo-glad"]
+	path = vendor/thermo-glad
+	url = https://github.com/Aletropy/thermo-glad.git
