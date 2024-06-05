@@ -3,12 +3,16 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(ThermoGlad)
 project(glfw)
+project(glm)
+project(imgui)
 
 project(Sandbox)
 project(ThermoEngine)
 
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/thermo-glad)
+add_subdirectory(vendor/glm)
+add_subdirectory(vendor/imgui)
 
 add_subdirectory(ThermoEngine)
 add_subdirectory(Sandbox)

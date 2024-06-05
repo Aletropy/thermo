@@ -10,6 +10,24 @@ add_library(ThermoEngine STATIC
         src/Core/Logger.cpp
         src/Graphics/Window.cpp
         src/Graphics/Window.h
+        src/Application/EntryPoint.h
+        src/Graphics/Rendering/Renderer.cpp
+        src/Graphics/Rendering/Renderer.h
+        src/Core/Base.h
+        src/Graphics/Colors.h
+        src/Application/Application.cpp
+        src/Application/Application.h
+        src/Graphics/Rendering/Buffer/VertexBuffer.cpp
+        src/Graphics/Rendering/Buffer/VertexBuffer.h
+        src/Graphics/Rendering/Buffer/IndexBuffer.cpp
+        src/Graphics/Rendering/Buffer/IndexBuffer.h
+        src/Graphics/Rendering/Buffer/VertexArray.cpp
+        src/Graphics/Rendering/Buffer/VertexArray.h
+        src/Graphics/Rendering/Shader.cpp
+        src/Graphics/Rendering/Shader.h
+        src/ECS/System.h
+        src/ECS/SystemManager.cpp
+        src/ECS/SystemManager.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)
@@ -18,4 +36,5 @@ target_include_directories(ThermoEngine PUBLIC src)
 
 target_link_libraries(ThermoEngine
         PRIVATE glfw ThermoGlad
+        PUBLIC glm imgui
 )

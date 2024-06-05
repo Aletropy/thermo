@@ -1,7 +1,10 @@
 #include "ThermoPch.h"
 #include "Window.h"
 
+#include "Graphics/Rendering/Renderer.h"
 #include <GLFW/glfw3.h>
+
+#include "Application/Application.h"
 
 namespace Thermo
 {
@@ -11,11 +14,7 @@ namespace Thermo
     {
         if(!s_glfwInitialized)
         {
-            if(!glfwInit())
-            {
-                Logger::Log("Cannot initialize glfw!");
-            }
-
+            THERMO_ASSERT(glfwInit(), "%s", "Failed to initialize GLFW!");
             s_glfwInitialized = true;
         }
 
@@ -25,6 +24,18 @@ namespace Thermo
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+
+        glfwMakeContextCurrent(m_Window);
+        glfwSwapInterval(1);
+
+        Renderer::Initialize();
+
+        THERMO_LOG("Window created: %s(%d, %d)", title.c_str(), width, height);
+
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+        {
+            Application::Instance->Terminate();
+        });
     }
 
     Window::~Window()

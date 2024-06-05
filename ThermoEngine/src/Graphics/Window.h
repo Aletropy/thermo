@@ -16,7 +16,6 @@ namespace Thermo
         void UpdateWindow();
 
         bool IsClosed() const;
-
     private:
         GLFWwindow* m_Window;
     };
