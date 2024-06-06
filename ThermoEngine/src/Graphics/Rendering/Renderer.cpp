@@ -37,6 +37,6 @@ namespace Thermo
     void Renderer::DrawIndexed(const Ref <VertexArray> &vertexArray, uint32_t indexCount)
     {
         vertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, (GLsizei)indexCount, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
     }
 } // Thermo
