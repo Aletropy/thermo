@@ -17,6 +17,9 @@ namespace Thermo
 
         void AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, const VertexLayout& layout) const;
         void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) const;
+
+        static Ref<VertexArray> Create();
+
     private:
         uint32_t m_Id{};
     };

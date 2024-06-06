@@ -13,6 +13,8 @@ namespace Thermo
         void Bind() const;
         static void Unbind() ;
 
+        static Ref<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);
+
     private:
         static std::string ReadFile(const std::string& path);
         static uint32_t CompileShader(uint32_t type, const std::string& source);

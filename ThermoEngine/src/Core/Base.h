@@ -9,7 +9,7 @@ namespace Thermo
     using Ref = std::shared_ptr<T>;
 
     template<typename T, typename ... Args>
-    constexpr T CreateRef(Args&& ... args)
+    constexpr Ref<T> CreateRef(Args&& ... args)
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }

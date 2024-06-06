@@ -33,4 +33,14 @@ namespace Thermo
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
+
+    Ref <IndexBuffer> IndexBuffer::Create(uint32_t size, void *data)
+    {
+        return CreateRef<IndexBuffer>(size, data);
+    }
+
+    Ref <IndexBuffer> IndexBuffer::Create(uint32_t size)
+    {
+        return CreateRef<IndexBuffer>(size);
+    }
 } // Thermo

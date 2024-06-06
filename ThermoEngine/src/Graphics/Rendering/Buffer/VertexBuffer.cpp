@@ -33,4 +33,14 @@ namespace Thermo
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+
+    Ref <VertexBuffer> VertexBuffer::Create(uint32_t size, void *data)
+    {
+        return CreateRef<VertexBuffer>(size, data);
+    }
+
+    Ref <VertexBuffer> VertexBuffer::Create(uint32_t size)
+    {
+        return CreateRef<VertexBuffer>(size);
+    }
 } // Thermo

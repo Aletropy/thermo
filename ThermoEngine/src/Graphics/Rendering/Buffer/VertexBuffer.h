@@ -14,6 +14,9 @@ namespace Thermo
         void Bind() const;
         static void Unbind();
 
+        static Ref<VertexBuffer> Create(uint32_t size, void* data);
+        static Ref<VertexBuffer> Create(uint32_t size);
+
     private:
         uint32_t m_Id{};
     };

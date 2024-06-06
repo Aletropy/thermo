@@ -15,5 +15,6 @@
 #include "Graphics/Rendering/Buffer/VertexArray.h"
 #include "Graphics/Rendering/Shader.h"
 #include "Graphics/Rendering/Renderer.h"
+#include "Graphics/Rendering/Batch2D.h"
 
 #endif //THERMO_THERMO_H

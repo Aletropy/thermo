@@ -49,5 +49,10 @@ namespace Thermo
     {
         glBindVertexArray(0);
     }
+
+    Ref<VertexArray> VertexArray::Create()
+    {
+        return CreateRef<VertexArray>();
+    }
 }
 #pragma clang diagnostic pop

@@ -28,6 +28,8 @@ add_library(ThermoEngine STATIC
         src/ECS/System.h
         src/ECS/SystemManager.cpp
         src/ECS/SystemManager.h
+        src/Graphics/Rendering/Batch2D.cpp
+        src/Graphics/Rendering/Batch2D.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)

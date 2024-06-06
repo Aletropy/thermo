@@ -86,4 +86,9 @@ namespace Thermo
 
         return shader;
     }
+
+    Ref<Shader> Shader::Create(const std::string& vertexPath, const std::string& fragmentPath)
+    {
+        return CreateRef<Shader>(vertexPath, fragmentPath);
+    }
 } // Thermo
