@@ -30,6 +30,14 @@ add_library(ThermoEngine STATIC
         src/ECS/SystemManager.h
         src/Graphics/Rendering/Batch2D.cpp
         src/Graphics/Rendering/Batch2D.h
+        src/Graphics/Camera2D.cpp
+        src/Graphics/Camera2D.h
+        src/Core/Time.cpp
+        src/Core/Time.h
+        src/Memory/SparseSet.cpp
+        src/Memory/SparseSet.h
+        src/ECS/EntityManager.cpp
+        src/ECS/EntityManager.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)

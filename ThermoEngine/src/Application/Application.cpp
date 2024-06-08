@@ -1,6 +1,8 @@
 #include "ThermoPch.h"
 #include "Application.h"
 
+#include "Core/Time.h"
+
 namespace Thermo
 {
     Application* Application::Instance = nullptr;
@@ -18,7 +20,9 @@ namespace Thermo
 
         while(m_IsRunning)
         {
-            m_SystemManager.UpdateSystems(0.0f);
+            float deltaTime = Time::CalculateDeltaTime();
+
+            m_SystemManager.UpdateSystems(deltaTime);
 
             m_Window.UpdateWindow();
         }

@@ -11,6 +11,9 @@ namespace Thermo
         ~Shader();
 
         void Bind() const;
+
+        void UploadMatrix4x4(const std::string& name, float* values) const;
+
         static void Unbind() ;
 
         static Ref<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);

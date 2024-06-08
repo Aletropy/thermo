@@ -91,4 +91,10 @@ namespace Thermo
     {
         return CreateRef<Shader>(vertexPath, fragmentPath);
     }
+
+    void Shader::UploadMatrix4x4(const std::string &name, float *values) const
+    {
+        int location = glGetUniformLocation(m_Id, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, values);
+    }
 } // Thermo
