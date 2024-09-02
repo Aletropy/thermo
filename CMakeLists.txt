@@ -6,7 +6,7 @@ project(glfw)
 project(glm)
 project(imgui)
 
-project(Sandbox)
+project(ThermoEditor)
 project(ThermoEngine)
 
 add_subdirectory(vendor/glfw)
@@ -15,4 +15,4 @@ add_subdirectory(vendor/glm)
 add_subdirectory(vendor/imgui)
 
 add_subdirectory(ThermoEngine)
-add_subdirectory(Sandbox)
+add_subdirectory(ThermoEditor)

@@ -16,6 +16,7 @@ namespace Thermo
         va_end(args);
 
         printf("\n");
+        fflush(stdout);
     }
 
     std::string Logger::GetLogLevelString(LogLevel level)

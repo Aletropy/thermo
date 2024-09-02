@@ -14,6 +14,8 @@ namespace Thermo
 
         void UploadMatrix4x4(const std::string& name, float* values) const;
 
+        void UploadIntArray(const std::string& name, int* values, int count);
+
         static void Unbind() ;
 
         static Ref<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);

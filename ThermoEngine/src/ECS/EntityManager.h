@@ -11,6 +11,6 @@ namespace Thermo
     public:
     };
 
-} // Thermo
+}
 
 #endif //THERMOENGINE_ENTITYMANAGER_H

@@ -38,11 +38,19 @@ add_library(ThermoEngine STATIC
         src/Memory/SparseSet.h
         src/ECS/EntityManager.cpp
         src/ECS/EntityManager.h
+        src/ECS/Systems/ImGuiSystem.cpp
+        src/ECS/Systems/ImGuiSystem.h
+        src/Graphics/Rendering/Texture2D.cpp
+        src/Graphics/Rendering/Texture2D.h
+        vendor/stb/stb_image.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)
 
-target_include_directories(ThermoEngine PUBLIC src)
+target_include_directories(ThermoEngine
+        PUBLIC src
+        PRIVATE vendor/stb
+)
 
 target_link_libraries(ThermoEngine
         PRIVATE glfw ThermoGlad

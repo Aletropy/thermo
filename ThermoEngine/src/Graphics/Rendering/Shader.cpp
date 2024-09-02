@@ -97,4 +97,10 @@ namespace Thermo
         int location = glGetUniformLocation(m_Id, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, values);
     }
+
+    void Shader::UploadIntArray(const std::string &name, int *values, int count)
+    {
+        int location = glGetUniformLocation(m_Id, name.c_str());
+        glUniform1iv(location, count, values);
+    }
 } // Thermo

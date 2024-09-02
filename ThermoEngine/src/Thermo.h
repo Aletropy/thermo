@@ -11,6 +11,8 @@
 #include "Graphics/Colors.h"
 #include "Graphics/Camera2D.h"
 
+#include "Graphics/Rendering/Texture2D.h"
+
 #include "Graphics/Rendering/Buffer/VertexBuffer.h"
 #include "Graphics/Rendering/Buffer/IndexBuffer.h"
 #include "Graphics/Rendering/Buffer/VertexArray.h"

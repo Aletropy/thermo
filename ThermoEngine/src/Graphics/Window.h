@@ -14,8 +14,10 @@ namespace Thermo
         ~Window();
 
         void UpdateWindow();
-
         bool IsClosed() const;
+
+        GLFWwindow* GetHandle() const { return m_Window; }
+
     private:
         GLFWwindow* m_Window;
     };

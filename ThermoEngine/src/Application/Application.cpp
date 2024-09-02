@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Core/Time.h"
+#include "ECS/Systems/ImGuiSystem.h"
 
 namespace Thermo
 {
@@ -12,6 +13,8 @@ namespace Thermo
     {
         THERMO_ASSERT(Instance == nullptr, "%s", "Application already exists!");
         Instance = this;
+
+        m_SystemManager.PushOverlay<ImGuiSystem>();
     }
 
     void Application::Run()
@@ -22,7 +25,11 @@ namespace Thermo
         {
             float deltaTime = Time::CalculateDeltaTime();
 
+            ImGuiSystem::Start();
+
             m_SystemManager.UpdateSystems(deltaTime);
+
+            ImGuiSystem::End();
 
             m_Window.UpdateWindow();
         }

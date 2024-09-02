@@ -6,8 +6,10 @@ namespace Thermo
 
     class System {
     public:
+        virtual ~System() = default;
+
         virtual void Initialize() = 0;
-        virtual void Update(float deltaTime) = 0;
+        virtual void Update(float deltaTime) { };
     };
 
 } // Thermo

@@ -3,6 +3,7 @@
 
 #include "Graphics/Window.h"
 #include "ECS/SystemManager.h"
+#include "ECS/Systems/ImGuiSystem.h"
 
 namespace Thermo
 {
@@ -29,6 +30,8 @@ namespace Thermo
         {
             m_SystemManager.PushSystem<T>();
         }
+
+        const Window& GetWindow() { return m_Window; }
 
     private:
         Window m_Window;
