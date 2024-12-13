@@ -43,6 +43,8 @@ add_library(ThermoEngine STATIC
         src/Graphics/Rendering/Texture2D.cpp
         src/Graphics/Rendering/Texture2D.h
         vendor/stb/stb_image.h
+        src/Graphics/Rendering/Framebuffer.cpp
+        src/Graphics/Rendering/Framebuffer.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)
