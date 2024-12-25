@@ -1,17 +1,18 @@
 #ifndef THERMOENGINE_SYSTEM_H
 #define THERMOENGINE_SYSTEM_H
+#include "EntityManager.h"
 
 namespace Thermo
 {
-
-    class System {
+    class System
+    {
     public:
         virtual ~System() = default;
 
         virtual void Initialize() = 0;
-        virtual void Update(float deltaTime) { };
-    };
 
+        virtual void Update(float deltaTime) {};
+    };
 } // Thermo
 
 #endif //THERMOENGINE_SYSTEM_H

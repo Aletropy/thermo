@@ -15,14 +15,14 @@
 
 namespace Thermo
 {
-    static const glm::vec4 VertexPositions[4] = {
+    static constexpr glm::vec4 VertexPositions[4] = {
             { -1.0f, -1.0f, 0.0f, 1.0f },
             { -1.0f, 1.0f, 0.0f, 1.0f },
             { 1.0f, 1.0f, 0.0f, 1.0f },
             { 1.0f, -1.0f, 0.0f, 1.0f }
     };
 
-    static const glm::vec2 TextureCoords[4] = {
+    static constexpr glm::vec2 TextureCoords[4] = {
             { 0.0f, 0.0f },
             { 0.0f, 1.0f },
             { 1.0f, 1.0f },
@@ -48,9 +48,9 @@ namespace Thermo
 
     struct BatchData
     {
-        static const uint32_t MaxQuads = 1000;
-        static const uint32_t MaxVertices = MaxQuads * 4;
-        static const uint32_t MaxIndices = MaxQuads * 6;
+        static constexpr uint32_t MaxQuads = 1000;
+        static constexpr uint32_t MaxVertices = MaxQuads * 4;
+        static constexpr uint32_t MaxIndices = MaxQuads * 6;
 
         QuadVertex* QuadVertexBufferBase;
         QuadVertex* QuadVertexBufferPtr;
@@ -89,7 +89,7 @@ namespace Thermo
         s_Data.QuadVertexArray = VertexArray::Create();
         s_Data.CircleVertexArray = VertexArray::Create();
 
-        s_Data.QuadVertexBuffer = VertexBuffer::Create((uint32_t)BatchData::MaxVertices * sizeof(QuadVertex));
+        s_Data.QuadVertexBuffer = VertexBuffer::Create(static_cast<uint32_t>(BatchData::MaxVertices) * sizeof(QuadVertex));
 
         VertexLayout layout;
 
@@ -139,17 +139,17 @@ namespace Thermo
 
         int32_t samplers[16];
         for(uint32_t i = 0; i < 16; i++)
-            samplers[i] = i;
+            samplers[i] = static_cast<int32_t>(i);
 
         s_Data.QuadShader->Bind();
         s_Data.QuadShader->UploadIntArray("u_Textures", samplers, 16);
     }
 
-    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const glm::vec4 &color)
+    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation, const glm::vec4 &color)
     {
-        glm::mat4 transform = glm::translate(
-                glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
-                        * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
+        * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
+        * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
 
         if(s_Data.QuadIndicesCount >= BatchData::MaxIndices)
             NextBatch();
@@ -167,12 +167,13 @@ namespace Thermo
         s_Data.QuadIndicesCount += 6;
     }
 
-    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const Ref<Texture2D> &texture,
-        float tillingFactor, const glm::vec4 &color)
+    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation, const Ref<Texture2D> &texture,
+        const float tillingFactor, const glm::vec4 &color)
     {
-        glm::mat4 transform = glm::translate(
-                glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
-                        * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+        const glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
+        * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
+        * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+
 
         if(s_Data.QuadIndicesCount >= BatchData::MaxIndices)
             NextBatch();
@@ -206,9 +207,9 @@ namespace Thermo
         s_Data.QuadIndicesCount += 6;
     }
 
-    void Batch2D::PushCircle(const glm::vec2 &position, float radius, const glm::vec2 &rotation, const glm::vec4 &color)
+    void Batch2D::PushCircle(const glm::vec2 &position, const float radius, const glm::vec2 &rotation, const glm::vec4 &color)
     {
-        glm::mat4 transform = glm::translate(
+        const glm::mat4 transform = glm::translate(
                 glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f));
 
 
@@ -267,7 +268,7 @@ namespace Thermo
         for(int i = 0; i < s_Data.Textures.size(); i++)
             s_Data.Textures[i]->Bind(i);
 
-        auto size = uint32_t((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+        auto size = static_cast<uint32_t>(reinterpret_cast<uint8_t *>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<uint8_t *>(s_Data.QuadVertexBufferBase));
 
         if(size > 0)
         {
@@ -279,7 +280,7 @@ namespace Thermo
             Renderer::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndicesCount);
         }
 
-        size = uint32_t((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
+        size = static_cast<uint32_t>(reinterpret_cast<uint8_t *>(s_Data.CircleVertexBufferPtr) - reinterpret_cast<uint8_t *>(s_Data.CircleVertexBufferBase));
 
         if(size > 0)
         {

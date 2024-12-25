@@ -2,12 +2,11 @@
 #define THERMOENGINE_APPLICATION_H
 
 #include "Graphics/Window.h"
-#include "ECS/SystemManager.h"
-#include "ECS/Systems/ImGuiSystem.h"
+#include "Core/LayerStack.h"
 
 namespace Thermo
 {
-    struct ApplicationSpecification
+    struct WindowAppSpecification
     {
         int WindowWidth;
         int WindowHeight;
@@ -20,25 +19,31 @@ namespace Thermo
     public:
         static Application* Instance;
     public:
-        explicit Application(const ApplicationSpecification& spec);
+        explicit Application(const WindowAppSpecification& spec);
 
         void Run();
         void Terminate();
 
-        template<typename T>
-        void PushSystem()
+        template<typename T, typename ... Args>
+        void PushLayer(Args&& ... args)
         {
-            m_SystemManager.PushSystem<T>();
+            m_LayerStack.PushLayer<T>();
+        }
+
+        template<typename T, typename ... Args>
+        void PushOverlay(Args&& ... args)
+        {
+            m_LayerStack.PushOverlay<T>();
         }
 
         const Window& GetWindow() { return m_Window; }
 
     private:
         Window m_Window;
-        SystemManager m_SystemManager;
+        LayerStack m_LayerStack;
 
         bool m_IsRunning = true;
-        ApplicationSpecification m_Spec;
+        WindowAppSpecification m_Spec;
 
     };
     static Application* CreateDefaultApplication();

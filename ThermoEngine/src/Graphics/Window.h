@@ -13,10 +13,10 @@ namespace Thermo
         Window(int width, int height, const std::string& title);
         ~Window();
 
-        void UpdateWindow();
-        bool IsClosed() const;
+        void UpdateWindow() const;
+        [[nodiscard]] bool IsClosed() const;
 
-        GLFWwindow* GetHandle() const { return m_Window; }
+        [[nodiscard]] GLFWwindow* GetHandle() const { return m_Window; }
 
     private:
         GLFWwindow* m_Window;

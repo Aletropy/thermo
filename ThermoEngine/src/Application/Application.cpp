@@ -2,34 +2,30 @@
 #include "Application.h"
 
 #include "Core/Time.h"
-#include "ECS/Systems/ImGuiSystem.h"
+#include "Layers/ImGuiLayer.h"
 
 namespace Thermo
 {
     Application* Application::Instance = nullptr;
 
-    Application::Application(const ApplicationSpecification &spec)
+    Application::Application(const WindowAppSpecification &spec)
         : m_Spec(spec), m_Window(spec.WindowWidth, spec.WindowHeight, spec.WindowTitle)
     {
         THERMO_ASSERT(Instance == nullptr, "%s", "Application already exists!");
         Instance = this;
 
-        m_SystemManager.PushOverlay<ImGuiSystem>();
+        m_LayerStack.PushOverlay<ImGuiLayer>();
     }
 
     void Application::Run()
     {
-        m_SystemManager.InitializeSystems();
-
         while(m_IsRunning)
         {
-            float deltaTime = Time::CalculateDeltaTime();
+            const float deltaTime = Time::CalculateDeltaTime();
 
-            ImGuiSystem::Start();
-
-            m_SystemManager.UpdateSystems(deltaTime);
-
-            ImGuiSystem::End();
+            ImGuiLayer::Start();
+            m_LayerStack.UpdateLayers(deltaTime);
+            ImGuiLayer::End();
 
             m_Window.UpdateWindow();
         }

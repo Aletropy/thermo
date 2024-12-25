@@ -1,5 +1,5 @@
 ﻿#include "ThermoPch.h"
-#include "ImGuiSystem.h"
+#include "ImGuiLayer.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -9,7 +9,7 @@
 
 namespace Thermo
 {
-    void ImGuiSystem::Initialize()
+    void ImGuiLayer::OnAttach()
     {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -26,7 +26,7 @@ namespace Thermo
         ImGui_ImplOpenGL3_Init("#version 460");
     }
 
-    void ImGuiSystem::Start()
+    void ImGuiLayer::Start()
     {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -34,13 +34,13 @@ namespace Thermo
         //ImGui::DockSpaceOverViewport();
     }
 
-    void ImGuiSystem::End()
+    void ImGuiLayer::End()
     {
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void ImGuiSystem::SetupStyle()
+    void ImGuiLayer::SetupStyle()
     {
          ImGuiStyle& style = ImGui::GetStyle();
         ImVec4* colors = style.Colors;

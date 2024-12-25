@@ -12,6 +12,12 @@ namespace Thermo
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        glEnable(GL_MULTISAMPLE);
+
+        const auto glVersion = glGetString(GL_VERSION);
+
+        THERMO_LOG("Renderer Initialized: %s", glVersion);
+
         // glEnable(GL_DEPTH_TEST);
 
         /*glEnable(GL_CULL_FACE);

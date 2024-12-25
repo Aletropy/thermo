@@ -10,7 +10,7 @@ namespace Thermo
 {
     static bool s_glfwInitialized = false;
 
-    Window::Window(int width, int height, const std::string &title)
+    Window::Window(const int width, const int height, const std::string &title)
     {
         if(!s_glfwInitialized)
         {
@@ -20,6 +20,8 @@ namespace Thermo
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+        glfwWindowHint(GLFW_SAMPLES, 4);
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -43,7 +45,7 @@ namespace Thermo
         glfwDestroyWindow(m_Window);
     }
 
-    void Window::UpdateWindow()
+    void Window::UpdateWindow() const
     {
         glfwPollEvents();
         glfwSwapBuffers(m_Window);

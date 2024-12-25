@@ -4,6 +4,10 @@
 #include "Core/Logger.h"
 #include "Core/Base.h"
 
+#include "Layers/ImGuiLayer.h"
+#include "Core/Layer.h"
+#include "Core/LayerStack.h"
+
 #include "Application/Application.h"
 #include "Application/EntryPoint.h"
 
@@ -19,5 +23,12 @@
 #include "Graphics/Rendering/Shader.h"
 #include "Graphics/Rendering/Renderer.h"
 #include "Graphics/Rendering/Batch2D.h"
+
+
+#include "ECS/EntityManager.h"
+#include "ECS/System.h"
+#include "ECS/EntitySystem.h"
+#include "ECS/SystemManager.h"
+#include "ECS/World.h"
 
 #endif //THERMO_THERMO_H

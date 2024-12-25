@@ -6,8 +6,22 @@
 
 namespace Thermo
 {
+    bool Logger::s_Enabled = true;
+
+    void Logger::Enable()
+    {
+        s_Enabled = true;
+    }
+
+    void Logger::Disable()
+    {
+        s_Enabled = false;
+    }
+
     void Logger::BaseLog(int line, const char *file, LogLevel level, const char *fmt, ...)
     {
+        if (!s_Enabled) return;
+
         std::string message = GetLogLevelString(level) + " [" + std::string(file) + ":" + std::to_string(line) + "] " + std::string(fmt);
 
         va_list args;

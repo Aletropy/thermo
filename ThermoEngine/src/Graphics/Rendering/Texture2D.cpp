@@ -24,7 +24,6 @@ namespace Thermo
         glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
         glTextureSubImage2D(m_Id, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
     }
 
     Texture2D::~Texture2D()

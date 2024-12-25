@@ -1,4 +1,4 @@
-#include "ThermoPch.h"
+﻿#include "ThermoPch.h"
 #include "EntityManager.h"
 
 namespace Thermo

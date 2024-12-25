@@ -10,10 +10,10 @@ namespace Thermo
 
     float Time::CalculateDeltaTime()
     {
-        double now = glfwGetTime();
+        const double now = glfwGetTime();
         m_DeltaTime = (now - m_LastTime);
         m_LastTime = now;
 
-        return (float)m_DeltaTime;
+        return static_cast<float>(m_DeltaTime);
     }
 } // Thermo

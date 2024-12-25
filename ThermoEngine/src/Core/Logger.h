@@ -15,9 +15,13 @@ namespace Thermo
 
     class Logger
     {
+    private:
+        static bool s_Enabled;
     public:
         STATIC_CONSTRUCTORS(Logger)
 
+        static void Enable();
+        static void Disable();
         static void BaseLog(int line, const char* file, LogLevel level, const char* fmt, ...);
 
         static std::string GetLogLevelString(LogLevel level);

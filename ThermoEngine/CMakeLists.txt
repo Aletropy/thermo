@@ -36,21 +36,28 @@ add_library(ThermoEngine STATIC
         src/Core/Time.h
         src/Memory/SparseSet.cpp
         src/Memory/SparseSet.h
-        src/ECS/EntityManager.cpp
-        src/ECS/EntityManager.h
-        src/ECS/Systems/ImGuiSystem.cpp
-        src/ECS/Systems/ImGuiSystem.h
+        src/Layers/ImGuiLayer.cpp
+        src/Layers/ImGuiLayer.h
         src/Graphics/Rendering/Texture2D.cpp
         src/Graphics/Rendering/Texture2D.h
         vendor/stb/stb_image.h
         src/Graphics/Rendering/Framebuffer.cpp
         src/Graphics/Rendering/Framebuffer.h
+        vendor/entt/entt.h
+        src/ECS/EntityManager.cpp
+        src/ECS/EntityManager.h
+        src/ECS/World.cpp
+        src/ECS/World.h
+        src/ECS/EntitySystem.h
+        src/Core/Layer.h
+        src/Core/LayerStack.cpp
+        src/Core/LayerStack.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)
 
 target_include_directories(ThermoEngine
-        PUBLIC src
+        PUBLIC src vendor/entt
         PRIVATE vendor/stb
 )
 
