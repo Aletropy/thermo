@@ -52,6 +52,8 @@ add_library(ThermoEngine STATIC
         src/Core/Layer.h
         src/Core/LayerStack.cpp
         src/Core/LayerStack.h
+        src/Events/Event.h
+        src/Events/WindowEvents.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)

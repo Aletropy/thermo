@@ -31,6 +31,7 @@ namespace Thermo
 
 
         void UpdateLayers(float deltaTime);
+        void OnEvent(Event& event);
 
         auto begin() { return m_Layers.begin(); }
         auto end() { return m_Layers.end(); }

@@ -4,6 +4,8 @@
 #include "Core/Logger.h"
 #include "Core/Base.h"
 
+#include "Events/Event.h"
+
 #include "Layers/ImGuiLayer.h"
 #include "Core/Layer.h"
 #include "Core/LayerStack.h"

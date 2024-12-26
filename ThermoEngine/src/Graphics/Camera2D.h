@@ -12,6 +12,8 @@ namespace Thermo
 
         [[nodiscard]] inline glm::mat4 GetViewProjMatrix() const { return m_ProjectionMatrix * m_ViewMatrix; }
 
+        void SetSize(float width, float height);
+
     private:
         void RecalculateViewMatrix();
         void RecalculateProjectionMatrix();

@@ -3,6 +3,8 @@
 
 #include <Thermo.h>
 
+#include "Events/WindowEvents.h"
+
 using namespace Thermo;
 
 static int WIDTH = 1280, HEIGHT = 720;
@@ -24,6 +26,11 @@ namespace ThermoEditor
         void OnAttach() override;
         void CreateSquare() const;
         void OnUpdate(float deltaTime) override;
+        void OnEvent(Event& event) override;
+
+        bool OnWindowResize(WindowResizeEvent& event) const;
+
+        static bool OnWindowClose(WindowCloseEvent &event);
 
     private:
         Ref<Camera2D> m_Camera;

@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Application/Application.h"
+#include "Events/WindowEvents.h"
 
 namespace Thermo
 {
@@ -20,7 +21,6 @@ namespace Thermo
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
         glfwWindowHint(GLFW_SAMPLES, 4);
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -36,7 +36,14 @@ namespace Thermo
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
         {
-            Application::Instance->Terminate();
+            auto event = WindowCloseEvent();
+            Application::Instance->OnEvent(event);
+        });
+
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int w, int h)
+        {
+           auto event = WindowResizeEvent(w, h);
+           Application::Instance->OnEvent(event);
         });
     }
 

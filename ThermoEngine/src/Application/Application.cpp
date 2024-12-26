@@ -35,4 +35,9 @@ namespace Thermo
     {
         m_IsRunning = false;
     }
+
+    void Application::OnEvent(Event &event)
+    {
+        m_LayerStack.OnEvent(event);
+    }
 } // Thermo

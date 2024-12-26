@@ -10,4 +10,11 @@ namespace Thermo
         }
     }
 
+    void LayerStack::OnEvent(Event &event)
+    {
+        for (const auto& m_layer : m_Layers)
+        {
+            m_layer->OnEvent(event);
+        }
+    }
 } // Thermo

@@ -19,7 +19,6 @@ namespace ThermoEditor
         m_EntityManager->AddComponent<Transform>(entity, Transform{});
     }
 
-
     void MainLayer::OnUpdate(float deltaTime)
     {
         Renderer::Clear();
@@ -55,5 +54,30 @@ namespace ThermoEditor
             Batch2D::PushQuad(transform.Position, transform.Scale, transform.Rotation, transform.Color);
         }
         Batch2D::EndBatch();
+    }
+
+    void MainLayer::OnEvent(Event &event)
+    {
+        auto dispatcher = EventDispatcher{event};
+        dispatcher.Dispatch<WindowResizeEvent>(THERMO_BIND_EVENT_FN(MainLayer::OnWindowResize));
+        dispatcher.Dispatch<WindowCloseEvent>(THERMO_BIND_EVENT_FN(MainLayer::OnWindowClose));
+    }
+
+    bool MainLayer::OnWindowResize(WindowResizeEvent& event) const
+    {
+        Renderer::SetViewport(
+            0, 0,
+            static_cast<uint32_t>(event.GetWidth()), static_cast<uint32_t>(event.GetHeight())
+            );
+
+        m_Camera->SetSize(static_cast<float>(event.GetWidth()), static_cast<float>(event.GetHeight()));
+
+        return false;
+    }
+
+    bool MainLayer::OnWindowClose(WindowCloseEvent& event)
+    {
+        Application::Instance->Terminate();
+        return true;
     }
 }

@@ -3,6 +3,7 @@
 
 #include "Graphics/Window.h"
 #include "Core/LayerStack.h"
+#include "Events/Event.h"
 
 namespace Thermo
 {
@@ -37,6 +38,8 @@ namespace Thermo
         }
 
         const Window& GetWindow() { return m_Window; }
+
+        void OnEvent(Event& event);
 
     private:
         Window m_Window;

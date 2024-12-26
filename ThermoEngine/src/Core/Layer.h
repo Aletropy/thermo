@@ -1,5 +1,6 @@
 ﻿#ifndef LAYER_H
 #define LAYER_H
+#include "Events/Event.h"
 
 namespace Thermo {
 
@@ -11,7 +12,7 @@ namespace Thermo {
         virtual void OnAttach() { }
         virtual void OnDetach() { }
         virtual void OnUpdate(float deltaTime) { }
-        virtual void OnEvent() { }
+        virtual void OnEvent(Event& event) { }
     };
 
 } // Thermo
