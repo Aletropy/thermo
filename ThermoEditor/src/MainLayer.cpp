@@ -11,6 +11,8 @@ namespace ThermoEditor
         Batch2D::SetCamera(m_Camera);
 
         m_EntityManager = CreateRef<EntityManager>();
+
+        m_ViewFramebuffer = Framebuffer::Create(800, 600);
     }
 
     void MainLayer::CreateSquare() const
@@ -46,33 +48,47 @@ namespace ThermoEditor
             ImGui::PopID();
         }
 
-        ImGui::End();
+        ImGui::End(); // Hierarchy
 
+        ImGui::Begin("Viewport");
+
+        const float windowWidth = ImGui::GetContentRegionAvail().x;
+        const float windowHeight = ImGui::GetContentRegionAvail().y;
+
+        m_ViewFramebuffer->Invalidate(windowWidth, windowHeight);
+
+        Renderer::SetViewport(
+            0, 0,
+            static_cast<uint32_t>(windowWidth), static_cast<uint32_t>(windowHeight)
+            );
+        m_Camera->SetSize(windowWidth, windowHeight);
+
+        auto pos = ImGui::GetCursorScreenPos();
+
+        ImGui::GetWindowDrawList()->AddImage(
+            reinterpret_cast<void *>(m_ViewFramebuffer->GetId()),
+            ImVec2(pos.x, pos.y),
+            ImVec2(pos.x + windowWidth, pos.y + windowHeight),
+            ImVec2(0, 1), ImVec2(1, 0)
+            );
+
+        ImGui::End(); // Viewport
+
+
+        m_ViewFramebuffer->Bind();
         Batch2D::BeginBatch();
         for (auto [entity, transform]: view.each())
         {
             Batch2D::PushQuad(transform.Position, transform.Scale, transform.Rotation, transform.Color);
         }
         Batch2D::EndBatch();
+        m_ViewFramebuffer->Unbind();
     }
 
     void MainLayer::OnEvent(Event &event)
     {
         auto dispatcher = EventDispatcher{event};
-        dispatcher.Dispatch<WindowResizeEvent>(THERMO_BIND_EVENT_FN(MainLayer::OnWindowResize));
         dispatcher.Dispatch<WindowCloseEvent>(THERMO_BIND_EVENT_FN(MainLayer::OnWindowClose));
-    }
-
-    bool MainLayer::OnWindowResize(WindowResizeEvent& event) const
-    {
-        Renderer::SetViewport(
-            0, 0,
-            static_cast<uint32_t>(event.GetWidth()), static_cast<uint32_t>(event.GetHeight())
-            );
-
-        m_Camera->SetSize(static_cast<float>(event.GetWidth()), static_cast<float>(event.GetHeight()));
-
-        return false;
     }
 
     bool MainLayer::OnWindowClose(WindowCloseEvent& event)

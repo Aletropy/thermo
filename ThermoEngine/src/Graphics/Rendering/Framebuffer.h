@@ -20,6 +20,7 @@ public:
 private:
     uint32_t m_Id;
     uint32_t m_ColorAttachment, m_DepthAttachment;
+    int m_Width, m_Height;
 };
 
 } // Thermo

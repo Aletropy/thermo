@@ -10,7 +10,6 @@ namespace Thermo
         virtual ~System() = default;
 
         virtual void Initialize() = 0;
-
         virtual void Update(float deltaTime) {};
     };
 } // Thermo

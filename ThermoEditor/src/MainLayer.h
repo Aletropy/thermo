@@ -4,6 +4,7 @@
 #include <Thermo.h>
 
 #include "Events/WindowEvents.h"
+#include "Graphics/Rendering/Framebuffer.h"
 
 using namespace Thermo;
 
@@ -20,7 +21,7 @@ namespace ThermoEditor
     };
 
 
-    class MainLayer : public Layer
+    class MainLayer final : public Layer
     {
     public:
         void OnAttach() override;
@@ -28,13 +29,12 @@ namespace ThermoEditor
         void OnUpdate(float deltaTime) override;
         void OnEvent(Event& event) override;
 
-        bool OnWindowResize(WindowResizeEvent& event) const;
-
         static bool OnWindowClose(WindowCloseEvent &event);
 
     private:
         Ref<Camera2D> m_Camera;
         Ref<EntityManager> m_EntityManager;
+        Ref<Framebuffer> m_ViewFramebuffer;
     };
 
 } // ThermoEditor

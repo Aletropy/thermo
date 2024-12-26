@@ -5,7 +5,7 @@
 
 namespace Thermo
 {
-    Framebuffer::Framebuffer(int width, int height)
+    Framebuffer::Framebuffer(const int width, const int height)
     {
         Invalidate(width, height);
     }
@@ -20,8 +20,14 @@ namespace Thermo
         glBindFramebuffer(GL_FRAMEBUFFER, m_Id);
     }
 
-    void Framebuffer::Invalidate(int width, int height)
+    void Framebuffer::Invalidate(const int width, const int height)
     {
+        if (width == m_Width && height == m_Height)
+            return;
+
+        m_Width = width;
+        m_Height = height;
+
         if(m_Id)
         {
             glDeleteFramebuffers(1, &m_Id);

@@ -46,8 +46,6 @@ add_library(ThermoEngine STATIC
         vendor/entt/entt.h
         src/ECS/EntityManager.cpp
         src/ECS/EntityManager.h
-        src/ECS/World.cpp
-        src/ECS/World.h
         src/ECS/EntitySystem.h
         src/Core/Layer.h
         src/Core/LayerStack.cpp

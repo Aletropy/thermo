@@ -14,9 +14,9 @@ namespace Thermo
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
-        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // IF using Docking Branch
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
         SetupStyle();
 
@@ -31,7 +31,7 @@ namespace Thermo
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        //ImGui::DockSpaceOverViewport();
+        ImGui::DockSpaceOverViewport();
     }
 
     void ImGuiLayer::End()
@@ -45,7 +45,6 @@ namespace Thermo
          ImGuiStyle& style = ImGui::GetStyle();
         ImVec4* colors = style.Colors;
 
-        // Estilo minimalista e moderno
         style.WindowRounding = 5.0f;
         style.FrameRounding = 5.0f;
         style.GrabRounding = 3.0f;

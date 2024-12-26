@@ -31,6 +31,5 @@
 #include "ECS/System.h"
 #include "ECS/EntitySystem.h"
 #include "ECS/SystemManager.h"
-#include "ECS/World.h"
 
 #endif //THERMO_THERMO_H

@@ -3,7 +3,7 @@
 
 namespace Thermo
 {
-    void SystemManager::UpdateSystems(float deltaTime)
+    void SystemManager::UpdateSystems(const float deltaTime)
     {
         for(const auto& system : m_Systems)
         {

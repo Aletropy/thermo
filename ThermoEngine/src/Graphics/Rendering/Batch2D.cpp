@@ -147,7 +147,7 @@ namespace Thermo
 
     void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation, const glm::vec4 &color)
     {
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
+        const glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
         * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
         * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
 
