@@ -12,21 +12,20 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-
 namespace Thermo
 {
     static constexpr glm::vec4 VertexPositions[4] = {
-            { -1.0f, -1.0f, 0.0f, 1.0f },
-            { -1.0f, 1.0f, 0.0f, 1.0f },
-            { 1.0f, 1.0f, 0.0f, 1.0f },
-            { 1.0f, -1.0f, 0.0f, 1.0f }
+        {-1.0f, -1.0f, 0.0f, 1.0f},
+        {-1.0f, 1.0f, 0.0f, 1.0f},
+        {1.0f, 1.0f, 0.0f, 1.0f},
+        {1.0f, -1.0f, 0.0f, 1.0f}
     };
 
     static constexpr glm::vec2 TextureCoords[4] = {
-            { 0.0f, 0.0f },
-            { 0.0f, 1.0f },
-            { 1.0f, 1.0f },
-            { 1.0f, 0.0f }
+        {0.0f, 0.0f},
+        {0.0f, 1.0f},
+        {1.0f, 1.0f},
+        {1.0f, 0.0f}
     };
 
     struct QuadVertex
@@ -52,34 +51,42 @@ namespace Thermo
         static constexpr uint32_t MaxVertices = MaxQuads * 4;
         static constexpr uint32_t MaxIndices = MaxQuads * 6;
 
-        QuadVertex* QuadVertexBufferBase;
-        QuadVertex* QuadVertexBufferPtr;
+        QuadVertex *QuadVertexBufferBase;
+        QuadVertex *QuadVertexBufferPtr;
 
-        CircleVertex* CircleVertexBufferBase;
-        CircleVertex* CircleVertexBufferPtr;
+        CircleVertex *CircleVertexBufferBase;
+        CircleVertex *CircleVertexBufferPtr;
 
         Ref<VertexBuffer> QuadVertexBuffer;
         Ref<IndexBuffer> QuadIndexBuffer;
         Ref<VertexArray> QuadVertexArray;
 
         Ref<VertexBuffer> CircleVertexBuffer;
-        Ref<IndexBuffer>  CircleIndexBuffer;
-        Ref<VertexArray>  CircleVertexArray;
+        Ref<IndexBuffer> CircleIndexBuffer;
+        Ref<VertexArray> CircleVertexArray;
 
         Ref<Camera2D> Camera;
 
         Ref<Shader> QuadShader;
         Ref<Shader> CircleShader;
 
-        std::vector<Ref<Texture2D>> Textures;
+        std::vector<Ref<Texture2D> > Textures;
 
         uint32_t QuadIndicesCount;
         uint32_t CircleIndicesCount;
     };
 
+    bool Batch2D::s_Initialized = false;
     static BatchData s_Data{};
+
     void Batch2D::Initialize()
     {
+        if (s_Initialized)
+        {
+            THERMO_WARN("Batch2D was already initializing, warning: you must have just one Batch2D::Initialize call.",
+                        0);
+            return;
+        }
         s_Data.QuadVertexBufferBase = new QuadVertex[BatchData::MaxVertices];
         s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
@@ -89,7 +96,8 @@ namespace Thermo
         s_Data.QuadVertexArray = VertexArray::Create();
         s_Data.CircleVertexArray = VertexArray::Create();
 
-        s_Data.QuadVertexBuffer = VertexBuffer::Create(static_cast<uint32_t>(BatchData::MaxVertices) * sizeof(QuadVertex));
+        s_Data.QuadVertexBuffer = VertexBuffer::Create(
+            static_cast<uint32_t>(BatchData::MaxVertices) * sizeof(QuadVertex));
 
         VertexLayout layout;
 
@@ -111,10 +119,10 @@ namespace Thermo
 
         s_Data.CircleVertexArray->AddVertexBuffer(s_Data.CircleVertexBuffer, layout);
 
-        auto* indices = new uint32_t[BatchData::MaxIndices];
+        auto *indices = new uint32_t[BatchData::MaxIndices];
         uint32_t offset = 0;
 
-        for(uint32_t i = 0; i < BatchData::MaxIndices; i += 6)
+        for (uint32_t i = 0; i < BatchData::MaxIndices; i += 6)
         {
             indices[i + 0] = offset + 0;
             indices[i + 1] = offset + 1;
@@ -138,23 +146,26 @@ namespace Thermo
         //s_Data.CircleShader = Shader::Create("assets/circleShader.vert", "assets/circleShader.frag");
 
         int32_t samplers[16];
-        for(uint32_t i = 0; i < 16; i++)
+        for (uint32_t i = 0; i < 16; i++)
             samplers[i] = static_cast<int32_t>(i);
 
         s_Data.QuadShader->Bind();
         s_Data.QuadShader->UploadIntArray("u_Textures", samplers, 16);
+
+        s_Initialized = true;
     }
 
-    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation, const glm::vec4 &color)
+    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation,
+                           const glm::vec4 &color)
     {
         const glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
-        * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
-        * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+                                    * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
+                                    * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
 
-        if(s_Data.QuadIndicesCount >= BatchData::MaxIndices)
+        if (s_Data.QuadIndicesCount >= BatchData::MaxIndices)
             NextBatch();
 
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             s_Data.QuadVertexBufferPtr->Position = transform * VertexPositions[i];
             s_Data.QuadVertexBufferPtr->TexCoords = TextureCoords[i];
@@ -167,34 +178,36 @@ namespace Thermo
         s_Data.QuadIndicesCount += 6;
     }
 
-    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation, const Ref<Texture2D> &texture,
-        const float tillingFactor, const glm::vec4 &color)
+    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation,
+                           const Ref<Texture2D> &texture,
+                           const float tillingFactor, const glm::vec4 &color)
     {
         const glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
-        * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
-        * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+                                    * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
+                                    * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
 
 
-        if(s_Data.QuadIndicesCount >= BatchData::MaxIndices)
+        if (s_Data.QuadIndicesCount >= BatchData::MaxIndices)
             NextBatch();
 
         float textureIndex = -1.0f;
 
-        for(int i = 0; i < s_Data.Textures.size(); i++)
+        for (int i = 0; i < s_Data.Textures.size(); i++)
         {
-            if(s_Data.Textures[i]->GetId() == texture->GetId()) {
+            if (s_Data.Textures[i]->GetId() == texture->GetId())
+            {
                 textureIndex = static_cast<float>(i);
                 break;
             }
         }
 
-        if(textureIndex == -1.0f)
+        if (textureIndex == -1.0f)
         {
             textureIndex = static_cast<float>(s_Data.Textures.size());
             s_Data.Textures.push_back(texture);
         }
 
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             s_Data.QuadVertexBufferPtr->Position = transform * VertexPositions[i];
             s_Data.QuadVertexBufferPtr->TexCoords = TextureCoords[i];
@@ -207,16 +220,17 @@ namespace Thermo
         s_Data.QuadIndicesCount += 6;
     }
 
-    void Batch2D::PushCircle(const glm::vec2 &position, const float radius, const glm::vec2 &rotation, const glm::vec4 &color)
+    void Batch2D::PushCircle(const glm::vec2 &position, const float radius, const glm::vec2 &rotation,
+                             const glm::vec4 &color)
     {
         const glm::mat4 transform = glm::translate(
-                glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f));
+            glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f));
 
 
-        if(s_Data.CircleIndicesCount >= BatchData::MaxIndices)
+        if (s_Data.CircleIndicesCount >= BatchData::MaxIndices)
             NextBatch();
 
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             s_Data.CircleVertexBufferPtr->Position = transform * VertexPositions[i];
             s_Data.CircleVertexBufferPtr->TexCoords = TextureCoords[i];
@@ -260,17 +274,18 @@ namespace Thermo
     {
         auto viewProjMatrix = glm::mat4(1.0f);
 
-        if(s_Data.Camera)
+        if (s_Data.Camera)
         {
             viewProjMatrix = s_Data.Camera->GetViewProjMatrix();
         }
 
-        for(int i = 0; i < s_Data.Textures.size(); i++)
+        for (int i = 0; i < s_Data.Textures.size(); i++)
             s_Data.Textures[i]->Bind(i);
 
-        auto size = static_cast<uint32_t>(reinterpret_cast<uint8_t *>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<uint8_t *>(s_Data.QuadVertexBufferBase));
+        auto size = static_cast<uint32_t>(reinterpret_cast<uint8_t *>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<
+                                              uint8_t *>(s_Data.QuadVertexBufferBase));
 
-        if(size > 0)
+        if (size > 0)
         {
             s_Data.QuadVertexBuffer->SubData(size, s_Data.QuadVertexBufferBase);
             s_Data.QuadShader->Bind();
@@ -280,9 +295,10 @@ namespace Thermo
             Renderer::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndicesCount);
         }
 
-        size = static_cast<uint32_t>(reinterpret_cast<uint8_t *>(s_Data.CircleVertexBufferPtr) - reinterpret_cast<uint8_t *>(s_Data.CircleVertexBufferBase));
+        size = static_cast<uint32_t>(reinterpret_cast<uint8_t *>(s_Data.CircleVertexBufferPtr) - reinterpret_cast<
+                                         uint8_t *>(s_Data.CircleVertexBufferBase));
 
-        if(size > 0)
+        if (size > 0)
         {
             s_Data.CircleVertexBuffer->SubData(size, s_Data.CircleVertexBufferBase);
             //s_Data.CircleShader->Bind();
@@ -292,7 +308,7 @@ namespace Thermo
         }
     }
 
-    void Batch2D::SetCamera(const Ref <Camera2D> &camera)
+    void Batch2D::SetCamera(const Ref<Camera2D> &camera)
     {
         s_Data.Camera = camera;
     }

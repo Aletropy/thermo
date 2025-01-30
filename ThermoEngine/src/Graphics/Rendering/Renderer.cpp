@@ -32,7 +32,7 @@ namespace Thermo
 
     void Renderer::Clear()
     {
-        glClear(GL_COLOR_BUFFER_BIT );
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
     void Renderer::Terminate()
@@ -40,7 +40,7 @@ namespace Thermo
         // TODO Finalize renderer objects
     }
 
-    void Renderer::DrawIndexed(const Ref <VertexArray> &vertexArray, uint32_t indexCount)
+    void Renderer::DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount)
     {
         vertexArray->Bind();
         glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);

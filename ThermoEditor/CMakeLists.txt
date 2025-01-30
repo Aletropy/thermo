@@ -8,8 +8,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(ThermoEditor
         src/ThermoEditorApp.cpp
-        src/MainLayer.cpp
-        src/MainLayer.h
+        src/EditorLayer.cpp
+        src/EditorLayer.h
+        src/SceneLayer.cpp
+        src/SceneLayer.h
 )
 
 target_include_directories(ThermoEditor PRIVATE src)

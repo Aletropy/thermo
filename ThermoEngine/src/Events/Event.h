@@ -10,11 +10,23 @@ namespace Thermo
 {
     enum EventType
     {
+        /* WINDOW RELATED EVENTS */
         WindowClose,
         WindowResize,
         WindowFocus,
         WindowLostFocus,
         WindowMoved,
+
+        /* KEYBOARD RELATED EVENTS */
+        KeyPressed,
+        KeyTyped,
+        KeyReleased,
+
+        /* MOUSE RELATED EVENTS */
+        MouseButtonPressed,
+        MouseMoved,
+        MouseScrolled,
+        MouseButtonReleased
     };
 
     class Event
@@ -23,6 +35,9 @@ namespace Thermo
         virtual ~Event() = default;
 
         bool Handled = false;
+
+        [[nodiscard]] virtual std::unique_ptr<Event> Clone() const = 0;
+
 
         [[nodiscard]] virtual EventType GetEventType() const = 0;
         [[nodiscard]] virtual const char* GetName() const = 0;

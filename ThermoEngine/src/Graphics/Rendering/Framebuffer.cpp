@@ -28,7 +28,7 @@ namespace Thermo
         m_Width = width;
         m_Height = height;
 
-        if(m_Id)
+        if (m_Id)
         {
             glDeleteFramebuffers(1, &m_Id);
             glDeleteTextures(1, &m_ColorAttachment);
@@ -50,6 +50,11 @@ namespace Thermo
         glTextureStorage2D(m_DepthAttachment, 1, GL_DEPTH24_STENCIL8, width, height);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);
+
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        {
+            THERMO_WARN("Framebuffer is not complete!", 0);
+        }
     }
 
     void Framebuffer::Unbind()

@@ -5,6 +5,9 @@
 #include "Core/Base.h"
 
 #include "Events/Event.h"
+#include "Events/KeyboardEvents.h"
+#include "Events/MouseEvents.h"
+#include "Events/WindowEvents.h"
 
 #include "Layers/ImGuiLayer.h"
 #include "Core/Layer.h"
@@ -20,8 +23,9 @@
 #include "Graphics/Rendering/Texture2D.h"
 
 #include "Graphics/Rendering/Buffer/VertexBuffer.h"
+#include "Graphics/Rendering/Buffer/VertexBuffer.h"
 #include "Graphics/Rendering/Buffer/IndexBuffer.h"
-#include "Graphics/Rendering/Buffer/VertexArray.h"
+#include "Graphics/Rendering/Framebuffer.h"
 #include "Graphics/Rendering/Shader.h"
 #include "Graphics/Rendering/Renderer.h"
 #include "Graphics/Rendering/Batch2D.h"

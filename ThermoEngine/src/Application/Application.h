@@ -1,6 +1,8 @@
 #ifndef THERMOENGINE_APPLICATION_H
 #define THERMOENGINE_APPLICATION_H
 
+#include <queue>
+
 #include "Graphics/Window.h"
 #include "Core/LayerStack.h"
 #include "Events/Event.h"
@@ -18,28 +20,32 @@ namespace Thermo
     class Application
     {
     public:
-        static Application* Instance;
+        static Application *Instance;
+
     public:
-        explicit Application(const WindowAppSpecification& spec);
+        explicit Application(const WindowAppSpecification &spec);
 
         void Run();
+
         void Terminate();
 
-        template<typename T, typename ... Args>
-        void PushLayer(Args&& ... args)
+        template<typename T, typename... Args>
+        Ref<T> PushLayer(Args &&... args)
         {
-            m_LayerStack.PushLayer<T>();
+            return m_LayerStack.PushLayer<T>(std::forward<Args>(args)...);
         }
 
-        template<typename T, typename ... Args>
-        void PushOverlay(Args&& ... args)
+        template<typename T, typename... Args>
+        Ref<T> PushOverlay(Args &&... args)
         {
-            m_LayerStack.PushOverlay<T>();
+            return m_LayerStack.PushOverlay<T>(std::forward<Args>(args)...);
         }
 
-        const Window& GetWindow() { return m_Window; }
+        const Window &GetWindow() { return m_Window; }
 
-        void OnEvent(Event& event);
+        void OnEvent(Event &event);
+
+        void ProcessEvents();
 
     private:
         Window m_Window;
@@ -48,8 +54,11 @@ namespace Thermo
         bool m_IsRunning = true;
         WindowAppSpecification m_Spec;
 
+        std::queue<std::unique_ptr<Event> > m_EventQueue;
+        std::mutex m_EventMutex;
     };
-    static Application* CreateDefaultApplication();
+
+    static Application *CreateDefaultApplication();
 } // Thermo
 
 #endif //THERMOENGINE_APPLICATION_H

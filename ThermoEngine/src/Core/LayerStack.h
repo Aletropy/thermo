@@ -11,27 +11,30 @@ namespace Thermo
     class LayerStack
     {
     public:
-        template<typename T, typename ... Args>
-        void PushLayer(Args&& ... args)
+        template<typename T, typename... Args>
+        std::shared_ptr<T> PushLayer(Args &&... args)
         {
             auto sharedPtr = std::make_shared<T>(std::forward<Args>(args)...);
             m_Layers.insert(m_Layers.begin() + m_OverlayIndex, sharedPtr);
             m_OverlayIndex++;
             sharedPtr->OnAttach();
+            return sharedPtr;
         }
 
-        template<typename T, typename ... Args>
-        void PushOverlay(Args&& ... args)
+        template<typename T, typename... Args>
+        std::shared_ptr<T> PushOverlay(Args &&... args)
         {
             auto sharedPtr = std::make_shared<T>(std::forward<Args>(args)...);
             m_Layers.push_back(sharedPtr);
             m_OverlayCount++;
             sharedPtr->OnAttach();
+            return sharedPtr;
         }
 
 
         void UpdateLayers(float deltaTime);
-        void OnEvent(Event& event);
+
+        void OnEvent(Event &event);
 
         auto begin() { return m_Layers.begin(); }
         auto end() { return m_Layers.end(); }
@@ -43,7 +46,6 @@ namespace Thermo
         size_t m_OverlayIndex = 0;
         size_t m_OverlayCount = 0;
     };
-
 } // Thermo
 
 #endif //THERMOENGINE_LAYERSTACK_H

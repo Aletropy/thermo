@@ -9,6 +9,10 @@ namespace Thermo
     {
     public:
         SET_EVENT_TYPE(WindowClose)
+
+        [[nodiscard]] std::unique_ptr<Event> Clone() const override {
+            return std::make_unique<WindowCloseEvent>();
+        }
     };
 
     class WindowResizeEvent final : public Event
@@ -19,6 +23,11 @@ namespace Thermo
         {}
 
         SET_EVENT_TYPE(WindowResize)
+
+        [[nodiscard]] std::unique_ptr<Event> Clone() const override {
+            return std::make_unique<WindowResizeEvent>(m_Width, m_Height);
+        }
+
 
         [[nodiscard]] int GetWidth() const { return m_Width; }
         [[nodiscard]] int GetHeight() const { return m_Height; }

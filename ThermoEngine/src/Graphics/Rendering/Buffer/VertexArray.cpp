@@ -18,25 +18,27 @@ namespace Thermo
         glDeleteVertexArrays(1, &m_Id);
     }
 
-    void VertexArray::SetIndexBuffer(const Ref <IndexBuffer> &indexBuffer) const
+    void VertexArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) const
     {
         glBindVertexArray(m_Id);
         indexBuffer->Bind();
     }
 
-    void VertexArray::AddVertexBuffer(const Ref <VertexBuffer> &vertexBuffer, const VertexLayout &layout) const
+    void VertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer, const VertexLayout &layout) const
     {
         glBindVertexArray(m_Id);
         vertexBuffer->Bind();
 
-        auto& elements = layout.Elements();
+        auto &elements = layout.Elements();
 
         for (int i = 0; i < elements.size(); ++i)
         {
-            auto& element = elements[i];
+            auto &element = elements[i];
 
             glEnableVertexAttribArray(i);
-            glVertexAttribPointer(i, (GLint)element.Count, element.Type, element.Normalized, (GLsizei)layout.Stride(), (const void*)element.Offset);
+            glVertexAttribPointer(i, static_cast<GLint>(element.Count), element.Type, element.Normalized,
+                                  static_cast<GLsizei>(layout.Stride()),
+                                  reinterpret_cast<const void *>(static_cast<intptr_t>(element.Offset)));
         }
     }
 

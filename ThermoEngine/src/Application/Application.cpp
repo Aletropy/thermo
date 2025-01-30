@@ -6,7 +6,7 @@
 
 namespace Thermo
 {
-    Application* Application::Instance = nullptr;
+    Application *Application::Instance = nullptr;
 
     Application::Application(const WindowAppSpecification &spec)
         : m_Spec(spec), m_Window(spec.WindowWidth, spec.WindowHeight, spec.WindowTitle)
@@ -19,9 +19,11 @@ namespace Thermo
 
     void Application::Run()
     {
-        while(m_IsRunning)
+        while (m_IsRunning)
         {
             const float deltaTime = Time::CalculateDeltaTime();
+
+            ProcessEvents();
 
             ImGuiLayer::Start();
             m_LayerStack.UpdateLayers(deltaTime);
@@ -36,8 +38,24 @@ namespace Thermo
         m_IsRunning = false;
     }
 
+    void Application::ProcessEvents()
+    {
+        std::queue<std::unique_ptr<Event> > events; {
+            std::lock_guard<std::mutex> lock(m_EventMutex);
+            std::swap(events, m_EventQueue);
+        }
+
+        while (!events.empty())
+        {
+            auto &event = events.front();
+            m_LayerStack.OnEvent(*event);
+            events.pop();
+        }
+    }
+
     void Application::OnEvent(Event &event)
     {
-        m_LayerStack.OnEvent(event);
+        std::lock_guard<std::mutex> lock(m_EventMutex);
+        m_EventQueue.push(event.Clone());
     }
 } // Thermo

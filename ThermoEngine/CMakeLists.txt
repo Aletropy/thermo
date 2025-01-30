@@ -52,6 +52,8 @@ add_library(ThermoEngine STATIC
         src/Core/LayerStack.h
         src/Events/Event.h
         src/Events/WindowEvents.h
+        src/Events/KeyboardEvents.h
+        src/Events/MouseEvents.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)
@@ -63,5 +65,5 @@ target_include_directories(ThermoEngine
 
 target_link_libraries(ThermoEngine
         PRIVATE glfw ThermoGlad
-        PUBLIC glm imgui
+        PUBLIC glm ImGui
 )
