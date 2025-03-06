@@ -19,6 +19,7 @@ Application *Thermo::CreateDefaultApplication()
     // Editor UI
     app->PushOverlay<ThermoEditor::EditorLayer>(
         sceneLayer->GetEditorCamera(),
+        sceneLayer->GetEditorCameraPerspective(),
         sceneLayer->GetEntityManager(),
         sceneLayer->GetFramebuffer()
     );

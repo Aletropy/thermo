@@ -25,28 +25,26 @@ add_library(ThermoEngine STATIC
         src/Graphics/Rendering/Buffer/VertexArray.h
         src/Graphics/Rendering/Shader.cpp
         src/Graphics/Rendering/Shader.h
-        src/ECS/System.h
+        src/ECS/ISystem.h
         src/ECS/SystemManager.cpp
         src/ECS/SystemManager.h
         src/Graphics/Rendering/Batch2D.cpp
         src/Graphics/Rendering/Batch2D.h
-        src/Graphics/Camera2D.cpp
-        src/Graphics/Camera2D.h
+        src/Graphics/OrthographicCamera.cpp
+        src/Graphics/OrthographicCamera.h
         src/Core/Time.cpp
         src/Core/Time.h
-        src/Memory/SparseSet.cpp
         src/Memory/SparseSet.h
         src/Layers/ImGuiLayer.cpp
         src/Layers/ImGuiLayer.h
-        src/Graphics/Rendering/Texture2D.cpp
-        src/Graphics/Rendering/Texture2D.h
+        src/Graphics/Rendering/Texture/Texture2D.cpp
+        src/Graphics/Rendering/Texture/Texture2D.h
         vendor/stb/stb_image.h
         src/Graphics/Rendering/Framebuffer.cpp
         src/Graphics/Rendering/Framebuffer.h
         vendor/entt/entt.h
         src/ECS/EntityManager.cpp
         src/ECS/EntityManager.h
-        src/ECS/EntitySystem.h
         src/Core/Layer.h
         src/Core/LayerStack.cpp
         src/Core/LayerStack.h
@@ -54,6 +52,19 @@ add_library(ThermoEngine STATIC
         src/Events/WindowEvents.h
         src/Events/KeyboardEvents.h
         src/Events/MouseEvents.h
+        src/ECS/DefaultComponents/TransformComponent.h
+        src/ECS/DefaultComponents/QuadRendererComponent.h
+        src/Graphics/PerspectiveCamera.cpp
+        src/Graphics/PerspectiveCamera.h
+        src/Graphics/Camera.h
+        src/Graphics/Rendering/Texture/SubTexture2D.h
+        src/Graphics/Rendering/Texture/Spritesheet.cpp
+        src/Graphics/Rendering/Texture/Spritesheet.h
+        src/Core/Keys.h
+        src/Core/Input.cpp
+        src/Core/Input.h
+        src/ECS/DefaultComponents/NameComponent.h
+        src/ECS/Components/EditorComponent.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)

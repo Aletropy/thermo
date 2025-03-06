@@ -4,13 +4,16 @@
 
 namespace Thermo
 {
-    class System
+    class ISystem
     {
     public:
-        virtual ~System() = default;
+        virtual ~ISystem() = default;
 
         virtual void Initialize() = 0;
-        virtual void Update(float deltaTime) {};
+
+        virtual void Update(float deltaTime)
+        {
+        };
     };
 } // Thermo
 

@@ -1,28 +1,30 @@
 #ifndef THERMOENGINE_SPARSESET_H
 #define THERMOENGINE_SPARSESET_H
+#include <cstdint>
+#include <tuple>
+#include <unordered_map>
+#include <vector>
 
 namespace Thermo
 {
-
     template<typename T>
     class SparseSet
     {
     public:
-        void Add(uint32_t id, const T& t)
+        void Add(const uint32_t id, const T &t)
         {
-            if(m_IdToIndex.find(id) == m_IdToIndex.end())
+            if (!m_IdToIndex.contains(id))
             {
-                uint32_t index = m_Data.size();
+                const uint32_t index = m_Data.size();
                 m_IdToIndex[id] = index;
                 m_IndexToId[index] = id;
                 m_Data.push_back(t);
             }
         }
 
-        void Remove(uint32_t id)
+        void Remove(const uint32_t id)
         {
-            auto it = m_IdToIndex.find(id);
-            if(it != m_IdToIndex.end())
+            if (const auto it = m_IdToIndex.find(id); it != m_IdToIndex.end())
             {
                 uint32_t index = it->second;
                 uint32_t last = m_Data.size() - 1;
@@ -38,27 +40,26 @@ namespace Thermo
             }
         }
 
-        T& Get(uint32_t id)
+        T &Get(uint32_t id)
         {
             return m_Data[m_IdToIndex[id]];
         }
 
-        bool Has(uint32_t id)
+        bool Has(const uint32_t id) const
         {
-            return m_IdToIndex.find(id) != m_IdToIndex.end();
+            return m_IdToIndex.contains(id);
         }
 
-        const std::vector<T>& GetData() const
+        const std::pmr::vector<T> &GetData() const
         {
             return m_Data;
         }
 
     private:
         std::vector<T> m_Data;
-        std::unordered_map<uint32_t, uint32_t> m_IdToIndex;
+        std::pmr::unordered_map<uint32_t, uint32_t> m_IdToIndex;
         std::unordered_map<uint32_t, uint32_t> m_IndexToId;
     };
-
 } // Thermo
 
 #endif //THERMOENGINE_SPARSESET_H

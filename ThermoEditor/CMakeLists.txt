@@ -12,6 +12,11 @@ add_executable(ThermoEditor
         src/EditorLayer.h
         src/SceneLayer.cpp
         src/SceneLayer.h
+        src/GUI/HierarchyPanel.cpp
+        src/GUI/HierarchyPanel.h
+        src/GUI/HierarchyPanel.h
+        src/GUI/ExplorerPanel.cpp
+        src/GUI/ExplorerPanel.h
 )
 
 target_include_directories(ThermoEditor PRIVATE src)

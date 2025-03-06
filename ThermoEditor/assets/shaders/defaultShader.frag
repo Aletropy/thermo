@@ -1,9 +1,11 @@
 #version 460 core
 
 layout(location = 0) in vec2 a_TexCoords;
-layout(location = 1) in float a_TexIndex;
-layout(location = 2) in float a_TillingFactor;
-layout(location = 3) in vec4 a_VertexColor;
+layout(location = 1) in vec2 a_TexUV;
+layout(location = 2) in vec2 a_TexUVSize;
+layout(location = 3) in float a_TexIndex;
+layout(location = 4) in float a_TillingFactor;
+layout(location = 5) in vec4 a_VertexColor;
 
 out vec4 fragColor;
 
@@ -41,5 +43,8 @@ void main()
     }
 
     int texIndex = int(a_TexIndex);
-    fragColor = getTextureColor(texIndex, a_TexCoords, a_TillingFactor) * a_VertexColor;
+
+    vec2 adjustedCoords = a_TexUV + (a_TexCoords * a_TexUVSize);
+
+    fragColor = getTextureColor(texIndex, adjustedCoords, a_TillingFactor) * a_VertexColor;
 }

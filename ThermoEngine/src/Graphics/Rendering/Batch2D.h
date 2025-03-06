@@ -3,8 +3,9 @@
 
 #include <glm/glm.hpp>
 
-#include "Texture2D.h"
-#include "Graphics/Camera2D.h"
+#include "Texture/Texture2D.h"
+#include "Graphics/Camera.h"
+#include "Texture/SubTexture2D.h"
 
 namespace Thermo
 {
@@ -13,7 +14,7 @@ namespace Thermo
     public:
         static void Initialize();
 
-        static void SetCamera(const Ref<Camera2D> &camera);
+        static void SetCamera(const Ref<Camera> &camera);
 
         static void BeginBatch();
 
@@ -22,6 +23,10 @@ namespace Thermo
 
         static void PushQuad(const glm::vec2 &position, const glm::vec2 &scale, float rotation,
                              const Ref<Texture2D> &texture, float tillingFactor = 1.0f,
+                             const glm::vec4 &color = glm::vec4(1.0f));
+
+        static void PushQuad(const glm::vec2 &position, const glm::vec2 &scale, float rotation,
+                             const SubTexture2D &subTexture,
                              const glm::vec4 &color = glm::vec4(1.0f));
 
         static void PushCircle(const glm::vec2 &position, float radius, const glm::vec2 &rotation,

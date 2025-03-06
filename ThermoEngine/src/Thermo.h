@@ -3,6 +3,8 @@
 
 #include "Core/Logger.h"
 #include "Core/Base.h"
+#include "Core/Keys.h"
+#include "Core/Input.h"
 
 #include "Events/Event.h"
 #include "Events/KeyboardEvents.h"
@@ -18,9 +20,12 @@
 
 #include "Graphics/Window.h"
 #include "Graphics/Colors.h"
-#include "Graphics/Camera2D.h"
+#include "Graphics/OrthographicCamera.h"
+#include "Graphics/PerspectiveCamera.h"
 
-#include "Graphics/Rendering/Texture2D.h"
+#include "Graphics/Rendering/Texture/Texture2D.h"
+#include "Graphics/Rendering/Texture/Spritesheet.h"
+#include "Graphics/Rendering/Texture/SubTexture2D.h"
 
 #include "Graphics/Rendering/Buffer/VertexBuffer.h"
 #include "Graphics/Rendering/Buffer/VertexBuffer.h"
@@ -32,8 +37,10 @@
 
 
 #include "ECS/EntityManager.h"
-#include "ECS/System.h"
-#include "ECS/EntitySystem.h"
+#include "ECS/ISystem.h"
 #include "ECS/SystemManager.h"
+#include "ECS/DefaultComponents/TransformComponent.h"
+#include "ECS/DefaultComponents/NameComponent.h"
+#include "ECS/DefaultComponents/QuadRendererComponent.h"
 
 #endif //THERMO_THERMO_H

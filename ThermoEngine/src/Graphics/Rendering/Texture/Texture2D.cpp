@@ -13,7 +13,7 @@ namespace Thermo
         stbi_set_flip_vertically_on_load(true);
 
         int w, h, c;
-        stbi_uc* data = stbi_load(filepath.c_str(), &w, &h, &c, 0);
+        const stbi_uc *data = stbi_load(filepath.c_str(), &w, &h, &c, 0);
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
         glTextureStorage2D(m_Id, 1, GL_RGBA8, w, h);
@@ -24,6 +24,14 @@ namespace Thermo
         glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
         glTextureSubImage2D(m_Id, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+        m_Width = w;
+        m_Height = h;
+
+        /*if (data != nullptr)
+        {
+            stbi_image_free(&data);
+        }*/
     }
 
     Texture2D::~Texture2D()
@@ -31,7 +39,7 @@ namespace Thermo
         glDeleteTextures(1, &m_Id);
     }
 
-    void Texture2D::Bind(uint32_t slot) const
+    void Texture2D::Bind(const uint32_t slot) const
     {
         glBindTextureUnit(slot, m_Id);
     }

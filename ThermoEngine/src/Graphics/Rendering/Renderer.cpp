@@ -20,9 +20,9 @@ namespace Thermo
 
         // glEnable(GL_DEPTH_TEST);
 
-        /*glEnable(GL_CULL_FACE);
+        glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
-        glFrontFace(GL_CCW);*/
+        glFrontFace(GL_CW);
     }
 
     void Renderer::SetClearColor(const glm::vec4 &color)
@@ -40,14 +40,18 @@ namespace Thermo
         // TODO Finalize renderer objects
     }
 
-    void Renderer::DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount)
+    void Renderer::DrawIndexed(const Ref<VertexArray> &vertexArray, const uint32_t indexCount)
     {
         vertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indexCount), GL_UNSIGNED_INT, nullptr);
     }
 
-    void Renderer::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+    void Renderer::SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
     {
-        glViewport(x, y, width, height);
+        glViewport(
+            static_cast<GLint>(x),
+            static_cast<GLint>(y),
+            static_cast<GLsizei>(width),
+            static_cast<GLsizei>(height));
     }
 } // Thermo

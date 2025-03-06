@@ -11,6 +11,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Texture/Texture2D.h"
+
 
 namespace Thermo
 {
@@ -32,6 +34,8 @@ namespace Thermo
     {
         glm::vec4 Position;
         glm::vec2 TexCoords;
+        glm::vec2 TextureUV;
+        glm::vec2 TextureUVSize;
         float TexIndex;
         float TillingFactor;
         glm::vec4 Color;
@@ -65,7 +69,7 @@ namespace Thermo
         Ref<IndexBuffer> CircleIndexBuffer;
         Ref<VertexArray> CircleVertexArray;
 
-        Ref<Camera2D> Camera;
+        Ref<Camera> BatchCamera;
 
         Ref<Shader> QuadShader;
         Ref<Shader> CircleShader;
@@ -102,6 +106,8 @@ namespace Thermo
         VertexLayout layout;
 
         layout.PushFloat(4);
+        layout.PushFloat(2);
+        layout.PushFloat(2);
         layout.PushFloat(2);
         layout.PushFloat(1);
         layout.PushFloat(1);
@@ -169,6 +175,8 @@ namespace Thermo
         {
             s_Data.QuadVertexBufferPtr->Position = transform * VertexPositions[i];
             s_Data.QuadVertexBufferPtr->TexCoords = TextureCoords[i];
+            s_Data.QuadVertexBufferPtr->TextureUV = {-1.0f, -1.0f};
+            s_Data.QuadVertexBufferPtr->TextureUVSize = {-1.0f, -1.0f};
             s_Data.QuadVertexBufferPtr->TexIndex = -1.0f;
             s_Data.QuadVertexBufferPtr->TillingFactor = 1.0f;
             s_Data.QuadVertexBufferPtr->Color = color;
@@ -212,7 +220,54 @@ namespace Thermo
             s_Data.QuadVertexBufferPtr->Position = transform * VertexPositions[i];
             s_Data.QuadVertexBufferPtr->TexCoords = TextureCoords[i];
             s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+            s_Data.QuadVertexBufferPtr->TextureUV = {-1.0f, -1.0f};
+            s_Data.QuadVertexBufferPtr->TextureUVSize = {-1.0f, -1.0f};
             s_Data.QuadVertexBufferPtr->TillingFactor = tillingFactor;
+            s_Data.QuadVertexBufferPtr->Color = color;
+            s_Data.QuadVertexBufferPtr++;
+        }
+
+        s_Data.QuadIndicesCount += 6;
+    }
+
+    void Batch2D::PushQuad(const glm::vec2 &position, const glm::vec2 &scale, const float rotation,
+                           const SubTexture2D &subTexture, const glm::vec4 &color)
+    {
+        const glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f))
+                                    * glm::rotate(glm::mat4(1.0f), glm::radians(-rotation), glm::vec3(0, 0, 1))
+                                    * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+
+
+        if (s_Data.QuadIndicesCount >= BatchData::MaxIndices)
+            NextBatch();
+
+        const auto texture = subTexture.Texture;
+
+        float textureIndex = -1.0f;
+
+        for (int i = 0; i < s_Data.Textures.size(); i++)
+        {
+            if (s_Data.Textures[i]->GetId() == texture->GetId())
+            {
+                textureIndex = static_cast<float>(i);
+                break;
+            }
+        }
+
+        if (textureIndex == -1.0f)
+        {
+            textureIndex = static_cast<float>(s_Data.Textures.size());
+            s_Data.Textures.push_back(texture);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            s_Data.QuadVertexBufferPtr->Position = transform * VertexPositions[i];
+            s_Data.QuadVertexBufferPtr->TexCoords = TextureCoords[i];
+            s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+            s_Data.QuadVertexBufferPtr->TextureUV = subTexture.Offset;
+            s_Data.QuadVertexBufferPtr->TextureUVSize = subTexture.Size;
+            s_Data.QuadVertexBufferPtr->TillingFactor = 1.0f;
             s_Data.QuadVertexBufferPtr->Color = color;
             s_Data.QuadVertexBufferPtr++;
         }
@@ -274,9 +329,9 @@ namespace Thermo
     {
         auto viewProjMatrix = glm::mat4(1.0f);
 
-        if (s_Data.Camera)
+        if (s_Data.BatchCamera)
         {
-            viewProjMatrix = s_Data.Camera->GetViewProjMatrix();
+            viewProjMatrix = s_Data.BatchCamera->GetViewProjectionMatrix();
         }
 
         for (int i = 0; i < s_Data.Textures.size(); i++)
@@ -308,8 +363,8 @@ namespace Thermo
         }
     }
 
-    void Batch2D::SetCamera(const Ref<Camera2D> &camera)
+    void Batch2D::SetCamera(const Ref<Camera> &camera)
     {
-        s_Data.Camera = camera;
+        s_Data.BatchCamera = camera;
     }
 } // Thermo

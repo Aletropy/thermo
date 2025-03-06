@@ -3,19 +3,25 @@
 
 #include <glm/glm.hpp>
 
+#include "Camera.h"
+
 namespace Thermo
 {
-    class Camera2D
+    class OrthographicCamera final : public Camera
     {
     public:
-        Camera2D(float width, float height, float zoom = 5.0f);
+        OrthographicCamera(float width, float height, float zoom = 5.0f);
 
-        [[nodiscard]] inline glm::mat4 GetViewProjMatrix() const { return m_ProjectionMatrix * m_ViewMatrix; }
+        [[nodiscard]] inline glm::mat4 GetViewProjectionMatrix() const override
+        {
+            return m_ProjectionMatrix * m_ViewMatrix;
+        }
 
         void SetSize(float width, float height);
 
     private:
         void RecalculateViewMatrix();
+
         void RecalculateProjectionMatrix();
 
     private:

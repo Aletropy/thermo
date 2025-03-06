@@ -12,7 +12,8 @@ namespace ThermoEditor
     class EditorLayer final : public Layer
     {
     public:
-        EditorLayer(const Ref<Camera2D> &camera, const Ref<EntityManager> &entityManager,
+        EditorLayer(const Ref<OrthographicCamera> &camera, const Ref<PerspectiveCamera> &perspCamera,
+                    const Ref<EntityManager> &entityManager,
                     const Ref<Framebuffer> &framebuffer);
 
         void OnUpdate(float deltaTime) override;
@@ -22,7 +23,8 @@ namespace ThermoEditor
         static bool OnWindowClose(WindowCloseEvent &event);
 
     private:
-        Ref<Camera2D> m_Camera;
+        Ref<OrthographicCamera> m_OrthoCamera;
+        Ref<PerspectiveCamera> m_PerspectiveCamera;
         Ref<EntityManager> m_EntityManager;
         Ref<Framebuffer> m_EditorFramebuffer;
     };
