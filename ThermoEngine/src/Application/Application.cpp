@@ -2,6 +2,12 @@
 #include "Application.h"
 
 #include "Core/Time.h"
+#include "ECS/DefaultComponents/CameraComponent.h"
+#include "ECS/DefaultComponents/NameComponent.h"
+#include "ECS/DefaultComponents/NextageComponent.h"
+#include "ECS/DefaultComponents/QuadRendererComponent.h"
+#include "ECS/DefaultComponents/TransformComponent.h"
+#include "ECS/Serialization/SerializerRegistry.h"
 #include "Layers/ImGuiLayer.h"
 
 namespace Thermo
@@ -14,7 +20,21 @@ namespace Thermo
         THERMO_ASSERT(Instance == nullptr, "%s", "Application already exists!");
         Instance = this;
 
+        SerializerRegistry::RegisterComponentSerializer<NameComponent>(
+            typeid(NameComponent).hash_code());
+        SerializerRegistry::RegisterComponentSerializer<QuadRendererComponent>(
+            typeid(QuadRendererComponent).hash_code());
+        SerializerRegistry::RegisterComponentSerializer<TransformComponent>(
+            typeid(TransformComponent).hash_code());
+        SerializerRegistry::RegisterComponentSerializer<CameraComponent>(
+            typeid(CameraComponent).hash_code());
+
+        SerializerRegistry::RegisterComponentSerializer<NextageComponent>(
+            typeid(NextageComponent).hash_code());
+
+#ifndef NOT_USING_IM_GUI
         m_LayerStack.PushOverlay<ImGuiLayer>();
+#endif
     }
 
     void Application::Run()
@@ -25,9 +45,13 @@ namespace Thermo
 
             ProcessEvents();
 
+#ifndef NOT_USING_IM_GUI
             ImGuiLayer::Start();
+#endif
             m_LayerStack.UpdateLayers(deltaTime);
+#ifndef NOT_USING_IM_GUI
             ImGuiLayer::End();
+#endif
 
             m_Window.UpdateWindow();
         }
@@ -36,6 +60,12 @@ namespace Thermo
     void Application::Terminate()
     {
         m_IsRunning = false;
+    }
+
+    void Application::ChangeWindowName(const std::string &newName)
+    {
+        m_Spec.WindowTitle = newName;
+        m_Window.SetName(newName);
     }
 
     void Application::ProcessEvents()

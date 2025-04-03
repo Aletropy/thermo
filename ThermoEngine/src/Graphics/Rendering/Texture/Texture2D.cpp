@@ -8,9 +8,9 @@
 
 namespace Thermo
 {
-    Texture2D::Texture2D(const std::string &filepath)
+    Texture2D::Texture2D(const std::string &filepath, const bool flip)
     {
-        stbi_set_flip_vertically_on_load(true);
+        stbi_set_flip_vertically_on_load(flip);
 
         int w, h, c;
         const stbi_uc *data = stbi_load(filepath.c_str(), &w, &h, &c, 0);
@@ -27,11 +27,26 @@ namespace Thermo
 
         m_Width = w;
         m_Height = h;
+        m_Filepath = filepath;
 
         /*if (data != nullptr)
         {
             stbi_image_free(&data);
         }*/
+    }
+
+    Texture2D::Texture2D(const int width, const int height)
+    {
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
+        glTextureStorage2D(m_Id, 1, GL_RGBA8, width, height);
+
+        glTextureParameteri(m_Id, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTextureParameteri(m_Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTextureParameteri(m_Id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        m_Width = width;
+        m_Height = height;
     }
 
     Texture2D::~Texture2D()
@@ -44,7 +59,7 @@ namespace Thermo
         glBindTextureUnit(slot, m_Id);
     }
 
-    Ref<Texture2D> Texture2D::Create(const std::string &filepath)
+    Ref<Texture2D> Texture2D::Create(const std::string &filepath, const bool flip)
     {
         return CreateRef<Texture2D>(filepath);
     }

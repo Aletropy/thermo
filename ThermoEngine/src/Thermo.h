@@ -35,12 +35,18 @@
 #include "Graphics/Rendering/Renderer.h"
 #include "Graphics/Rendering/Batch2D.h"
 
-
 #include "ECS/EntityManager.h"
 #include "ECS/ISystem.h"
 #include "ECS/SystemManager.h"
 #include "ECS/DefaultComponents/TransformComponent.h"
 #include "ECS/DefaultComponents/NameComponent.h"
 #include "ECS/DefaultComponents/QuadRendererComponent.h"
+
+
+#ifdef THERMO_INCLUDE_SERIALIZATION
+#include "ECS/Serialization/IComponentSerializer.h"
+#include "ECS/Serialization/SerializerRegistry.h"
+#endif
+
 
 #endif //THERMO_THERMO_H

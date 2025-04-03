@@ -14,3 +14,9 @@
 	path = vendor/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
+[submodule "ThermoEngine/vendor/rttr"]
+	path = ThermoEngine/vendor/rttr
+	url = https://github.com/rttrorg/rttr.git
+[submodule "ThermoEngine/vendor/yaml-cpp"]
+	path = ThermoEngine/vendor/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git

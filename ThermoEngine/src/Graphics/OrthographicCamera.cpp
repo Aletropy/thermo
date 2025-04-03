@@ -6,21 +6,33 @@
 namespace Thermo
 {
     OrthographicCamera::OrthographicCamera(const float width, const float height, const float zoom)
-        : m_AspectRatio(width / height)
-          , m_Zoom(zoom)
-          , m_Position(0.0f, 0.0f, 0.0f)
+        : m_Position(0.0f, 0.0f, 0.0f)
           , m_Rotation(0.0f, 0.0f, 0.0f)
+          , m_AspectRatio(width / height)
+          , m_Zoom(zoom)
     {
-        float aspectRatio = width / height;
+        const float aspectRatio = width / height;
 
         m_ViewMatrix = glm::mat4(1.0f);
         m_ProjectionMatrix = glm::ortho(-zoom * aspectRatio, zoom * aspectRatio, -zoom, zoom);
+    }
+
+    void OrthographicCamera::SetZoom(const float zoom)
+    {
+        m_Zoom = zoom;
+        RecalculateProjectionMatrix();
     }
 
     void OrthographicCamera::SetSize(const float width, const float height)
     {
         m_AspectRatio = width / height;
         RecalculateProjectionMatrix();
+    }
+
+    void OrthographicCamera::SetPosition(const glm::vec3 position)
+    {
+        m_Position = position;
+        RecalculateViewMatrix();
     }
 
     void OrthographicCamera::RecalculateViewMatrix()

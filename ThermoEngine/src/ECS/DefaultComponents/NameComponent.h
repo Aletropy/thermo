@@ -4,17 +4,26 @@
 #include <string>
 #include <utility>
 
+#include "ECS/Serialization/IComponentSerializer.h"
+#include "ECS/ComponentRegistry.h"
+
 namespace Thermo
 {
-    struct NameComponent
+    class NameComponent
     {
-        explicit NameComponent(std::string name)
-            : Name(std::move(name))
-        {
-        }
-
+    public:
         std::string Name = std::string();
     };
+
+    DEFINE_COMPONENT_SERIALIZER(NameComponent,
+                                {
+                                node["Name"] = component->Name;
+                                },
+                                {
+                                component.Name = node["Name"].as<std::string>();
+                                }
+    )
 }
+
 
 #endif //NAMECOMPONENT_H

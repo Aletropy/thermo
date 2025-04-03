@@ -41,19 +41,20 @@ namespace Thermo
             return m_LayerStack.PushOverlay<T>(std::forward<Args>(args)...);
         }
 
+        void ChangeWindowName(const std::string& newName);
+
+        const WindowAppSpecification& GetSpecification() const { return m_Spec; }
         const Window &GetWindow() { return m_Window; }
 
         void OnEvent(Event &event);
-
         void ProcessEvents();
-
     private:
         Window m_Window;
         LayerStack m_LayerStack;
 
         bool m_IsRunning = true;
-        WindowAppSpecification m_Spec;
 
+        WindowAppSpecification m_Spec;
         std::queue<std::unique_ptr<Event> > m_EventQueue;
         std::mutex m_EventMutex;
     };

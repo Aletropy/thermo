@@ -5,7 +5,6 @@ project(ThermoEngine LANGUAGES CXX)
 
 add_library(ThermoEngine STATIC
         src/Thermo.h
-
         src/Core/Logger.h
         src/Core/Logger.cpp
         src/Graphics/Window.cpp
@@ -64,17 +63,25 @@ add_library(ThermoEngine STATIC
         src/Core/Input.cpp
         src/Core/Input.h
         src/ECS/DefaultComponents/NameComponent.h
-        src/ECS/Components/EditorComponent.h
+        src/ECS/ComponentRegistry.h
+        src/ECS/Serialization/IComponentSerializer.h
+        src/ECS/Serialization/SerializerRegistry.cpp
+        src/ECS/Serialization/SerializerRegistry.h
+        src/ECS/Serialization/SerializeTools.h
+        src/ECS/DefaultComponents/CameraComponent.h
+        src/ECS/World.cpp
+        src/ECS/World.h
+        src/ECS/DefaultComponents/NextageComponent.h
 )
 
 target_precompile_headers(ThermoEngine PRIVATE src/ThermoPch.h)
 
 target_include_directories(ThermoEngine
-        PUBLIC src vendor/entt
+        PUBLIC src vendor/entt vendor/yaml-cpp/include
         PRIVATE vendor/stb
 )
 
 target_link_libraries(ThermoEngine
         PRIVATE glfw ThermoGlad
-        PUBLIC glm ImGui
+        PUBLIC glm ImGui yaml-cpp
 )

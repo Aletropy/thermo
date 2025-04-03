@@ -6,8 +6,9 @@ namespace Thermo
     Spritesheet::Spritesheet(const std::string &filepath, const int spriteWidth, const int spriteHeight,
                              const int framesPerRow,
                              const int framesPerColumn)
-        : m_Texture(Texture2D::Create(filepath))
     {
+        m_Texture = Texture2D::Create(filepath);
+
         const auto texWidth = static_cast<float>(m_Texture->GetWidth());
         const auto texHeight = static_cast<float>(m_Texture->GetHeight());
 

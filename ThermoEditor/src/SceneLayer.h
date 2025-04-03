@@ -3,6 +3,8 @@
 
 #include <Thermo.h>
 
+#include "ECS/World.h"
+
 using namespace Thermo;
 
 namespace ThermoEditor
@@ -24,15 +26,22 @@ namespace ThermoEditor
             return m_EditorCameraPerspective;
         }
 
-        [[nodiscard]] const Ref<EntityManager> &GetEntityManager() const { return m_EntityManager; }
+        [[nodiscard]] const Ref<World> &GetWorld() const { return m_World; }
+
+        void UpdatePlayMode();
+
+        bool IsInPlayMode() const { return m_IsPlayMode; }
+
+        static SceneLayer *Get() { return s_Instance; }
 
     private:
         Ref<Framebuffer> m_Framebuffer;
-        Ref<Spritesheet> m_Spritesheet;
+        bool m_IsPlayMode = false;
         Ref<OrthographicCamera> m_EditorCamera;
         Ref<PerspectiveCamera> m_EditorCameraPerspective;
-        Ref<EntityManager> m_EntityManager;
-        Ref<SystemManager> m_SystemManager;
+        Ref<World> m_World;
+
+        static SceneLayer *s_Instance;
     };
 } // ThermoEditor
 

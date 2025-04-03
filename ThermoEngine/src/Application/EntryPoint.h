@@ -7,12 +7,12 @@
 
 namespace Thermo
 {
-    extern Application* CreateDefaultApplication();
+    extern Application *CreateDefaultApplication(int argc, char *argv[]);
 }
 
-int main()
+int main(const int argc, char *argv[])
 {
-    auto app = Thermo::CreateDefaultApplication();
+    const auto app = Thermo::CreateDefaultApplication(argc, argv);
     app->Run();
     delete app;
     return 0;

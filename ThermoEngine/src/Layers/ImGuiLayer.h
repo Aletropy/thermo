@@ -5,12 +5,13 @@
 
 namespace Thermo
 {
-    class ImGuiLayer : public Layer
+    class ImGuiLayer final : public Layer
     {
     public:
         void OnAttach() override;
 
         static void Start();
+
         static void End();
 
     private:

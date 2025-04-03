@@ -1,32 +1,56 @@
 ﻿#include "EditorLayer.h"
 #include <../../vendor/imgui/imgui.h>
 
+#include <utility>
+
 #include "imgui_internal.h"
+#include "PathHelper.h"
+#include "SceneLayer.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "GUI/ExplorerPanel.h"
 #include "GUI/HierarchyPanel.h"
 
 namespace ThermoEditor
 {
-    EditorLayer::EditorLayer(const Ref<OrthographicCamera> &camera, const Ref<PerspectiveCamera> &perspCamera,
-                             const Ref<EntityManager> &entityManager,
+    EditorLayer::EditorLayer(const Ref<OrthographicCamera> &camera,
+                             const Ref<PerspectiveCamera> &perspCamera,
                              const Ref<Framebuffer> &framebuffer)
-        : m_OrthoCamera(camera), m_EntityManager(entityManager), m_EditorFramebuffer(framebuffer),
-          m_PerspectiveCamera(perspCamera)
+        : m_OrthoCamera(camera), m_PerspectiveCamera(perspCamera),
+          m_EditorFramebuffer(framebuffer)
     {
+    }
+
+    void EditorLayer::OnAttach()
+    {
+        ExplorerPanel::Load(PathHelper::GetCurrentRootPath());
     }
 
     static bool needsResize = false;
 
-    static auto cameraPosition = glm::vec3(0.0f);
-    static auto cameraRotation = glm::vec3(0.0f);
-
-    void EditorLayer::OnUpdate(float deltaTime)
+    void EditorLayer::OnUpdate(const float deltaTime)
     {
+        const auto m_World = SceneLayer::Get()->GetWorld();
+        const auto m_EntityManager = m_World->GetEntityManager();
+
+        if (ImGui::IsKeyPressed(ImGuiKey_S, false) && !SceneLayer::Get()->IsInPlayMode())
+        {
+            if (ImGui::IsKeyDown(ImGuiKey_ModCtrl))
+            {
+                m_World->SaveToFile(PathHelper::GetCurrentWorldsPath());
+            }
+        }
+
+        if (ImGui::IsKeyPressed(ImGuiKey_F5, false))
+        {
+            const auto sceneLayer = SceneLayer::Get();
+            sceneLayer->UpdatePlayMode();
+        }
+
         ExplorerPanel::DisplayExplorerPanel();
         HierarchyPanel::DisplayEntities(m_EntityManager);
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
         ImGui::Begin("Viewport");
 
         const float newWidth = ImGui::GetContentRegionAvail().x;
@@ -59,6 +83,27 @@ namespace ThermoEditor
             needsResize = true;
         }
 
+        if (ImGui::IsWindowHovered())
+        {
+            const ImGuiIO &io = ImGui::GetIO();
+            if (ImGui::IsMouseDown(ImGuiMouseButton_Middle))
+            {
+                glm::vec3 camPos = m_OrthoCamera->GetPosition();
+                const float panSpeed = (0.1f * m_ZoomFactor) * deltaTime;
+                camPos.x -= io.MouseDelta.x * panSpeed;
+                camPos.y += io.MouseDelta.y * panSpeed;
+                m_OrthoCamera->SetPosition(camPos);
+            }
+
+            if (io.MouseWheel != 0.0f)
+            {
+                m_ZoomFactor -= (io.MouseWheel * 5.0f) * deltaTime;
+                if (m_ZoomFactor < 0.1f)
+                    m_ZoomFactor = 0.1f;
+                m_OrthoCamera->SetZoom(m_ZoomFactor);
+            }
+        }
+
         ImGui::End(); // Viewport
         ImGui::PopStyleVar();
     }
@@ -71,6 +116,9 @@ namespace ThermoEditor
 
     bool EditorLayer::OnWindowClose(WindowCloseEvent &event)
     {
+        const auto sceneLayer = SceneLayer::Get();
+        if (sceneLayer != nullptr)
+            sceneLayer->GetWorld()->SaveToFile(PathHelper::GetCurrentWorldsPath());
         Application::Instance->Terminate();
         return true;
     }

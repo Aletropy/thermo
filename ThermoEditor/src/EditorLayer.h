@@ -1,6 +1,7 @@
 ﻿#ifndef MAIN_LAYER_H
 #define MAIN_LAYER_H
 
+#include <filesystem>
 #include <Thermo.h>
 
 using namespace Thermo;
@@ -13,8 +14,9 @@ namespace ThermoEditor
     {
     public:
         EditorLayer(const Ref<OrthographicCamera> &camera, const Ref<PerspectiveCamera> &perspCamera,
-                    const Ref<EntityManager> &entityManager,
                     const Ref<Framebuffer> &framebuffer);
+
+        void OnAttach() override;
 
         void OnUpdate(float deltaTime) override;
 
@@ -25,8 +27,8 @@ namespace ThermoEditor
     private:
         Ref<OrthographicCamera> m_OrthoCamera;
         Ref<PerspectiveCamera> m_PerspectiveCamera;
-        Ref<EntityManager> m_EntityManager;
         Ref<Framebuffer> m_EditorFramebuffer;
+        float m_ZoomFactor = 5.0f;
     };
 } // ThermoEditor
 

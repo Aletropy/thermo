@@ -102,4 +102,9 @@ namespace Thermo
     {
         return glfwWindowShouldClose(m_Window);
     }
+
+    void Window::SetName(const std::string &name) const
+    {
+        glfwSetWindowTitle(m_Window, name.c_str());
+    }
 } // Thermo

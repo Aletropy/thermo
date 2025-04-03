@@ -18,6 +18,8 @@ namespace Thermo
 
         [[nodiscard]] GLFWwindow* GetHandle() const { return m_Window; }
 
+        void SetName(const std::string& name) const;
+
     private:
         GLFWwindow* m_Window;
     };

@@ -17,7 +17,13 @@ namespace Thermo
             return m_ProjectionMatrix * m_ViewMatrix;
         }
 
+        void SetZoom(float zoom);
+
         void SetSize(float width, float height);
+
+        void SetPosition(glm::vec3 position);
+
+        [[nodiscard]] glm::vec3 GetPosition() const { return m_Position; }
 
     private:
         void RecalculateViewMatrix();
