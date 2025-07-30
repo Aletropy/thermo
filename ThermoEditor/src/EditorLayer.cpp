@@ -6,9 +6,11 @@
 #include "imgui_internal.h"
 #include "PathHelper.h"
 #include "SceneLayer.h"
+#include "Core/Project.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "GUI/ExplorerPanel.h"
 #include "GUI/HierarchyPanel.h"
+#include "GUI/ProjectPanel.h"
 
 namespace ThermoEditor
 {
@@ -37,6 +39,7 @@ namespace ThermoEditor
             if (ImGui::IsKeyDown(ImGuiKey_ModCtrl))
             {
                 m_World->SaveToFile(PathHelper::GetCurrentWorldsPath());
+                Project::Instance.SaveProject();
             }
         }
 
@@ -48,6 +51,8 @@ namespace ThermoEditor
 
         ExplorerPanel::DisplayExplorerPanel();
         HierarchyPanel::DisplayEntities(m_EntityManager);
+
+        ProjectPanel::RenderProjectPanel();
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
@@ -88,18 +93,26 @@ namespace ThermoEditor
             const ImGuiIO &io = ImGui::GetIO();
             if (ImGui::IsMouseDown(ImGuiMouseButton_Middle))
             {
+                ImGui::CaptureMouseFromApp(true);
                 glm::vec3 camPos = m_OrthoCamera->GetPosition();
-                const float panSpeed = (0.1f * m_ZoomFactor) * deltaTime;
+                float panSpeed = (0.1f * m_ZoomFactor) * deltaTime;
+                if (ImGui::IsKeyDown(ImGuiKey_ModCtrl))
+                    panSpeed *= 2.5f;
                 camPos.x -= io.MouseDelta.x * panSpeed;
                 camPos.y += io.MouseDelta.y * panSpeed;
                 m_OrthoCamera->SetPosition(camPos);
-            }
+            } else
+                ImGui::CaptureMouseFromApp(false);
 
             if (io.MouseWheel != 0.0f)
             {
-                m_ZoomFactor -= (io.MouseWheel * 5.0f) * deltaTime;
-                if (m_ZoomFactor < 0.1f)
-                    m_ZoomFactor = 0.1f;
+                float zoomSpeed = 5.0f;
+                if (ImGui::IsKeyDown(ImGuiKey_ModCtrl))
+                {
+                    zoomSpeed = 10.0f;
+                }
+                m_ZoomFactor -= (io.MouseWheel * zoomSpeed) * deltaTime;
+                m_ZoomFactor = glm::max(m_ZoomFactor, 0.1f); // Ensure zoom factor doesn't go below 0.1
                 m_OrthoCamera->SetZoom(m_ZoomFactor);
             }
         }

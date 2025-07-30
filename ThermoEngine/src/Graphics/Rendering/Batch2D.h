@@ -29,9 +29,6 @@ namespace Thermo
                              const SubTexture2D &subTexture,
                              const glm::vec4 &color = glm::vec4(1.0f));
 
-        static void PushCircle(const glm::vec2 &position, float radius, const glm::vec2 &rotation,
-                               const glm::vec4 &color = glm::vec4(0.0f));
-
         static void EndBatch();
 
         static void Shutdown();

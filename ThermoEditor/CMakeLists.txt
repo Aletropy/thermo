@@ -17,6 +17,8 @@ add_executable(ThermoEditor
         src/GUI/HierarchyPanel.h
         src/GUI/ExplorerPanel.cpp
         src/GUI/ExplorerPanel.h
+        src/GUI/ProjectPanel.cpp
+        src/GUI/ProjectPanel.h
         src/PathHelper.cpp
         src/PathHelper.h
         src/Core/ProjectProperties.h
