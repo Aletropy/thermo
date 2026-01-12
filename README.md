@@ -1,6 +1,6 @@
 # 🔥 Thermo Engine
 
-A lightweight and personal 2D game engine built from scratch in C++ for learning and experimentation.
+Thermo is a high-performance 2D rendering engine built with C++ and modern OpenGL. It implements an Entity-Component-System (ECS) architecture to handle thousands of entities efficiently. Features a custom Batch Renderer to minimize draw calls and optimize GPU usage.
 
 ## About The Project
 
